@@ -1,0 +1,33 @@
+{
+  "generator-jhipster": {
+    "applicationType": "monolith",
+    "authenticationType": "jwt",
+    "baseName": "healthCare",
+    "buildTool": "maven",
+    "cacheProvider": "caffeine",
+    "clientFramework": "angular",
+    "clientTestFrameworks": [],
+    "clientTheme": "none",
+    "creationTimestamp": 1767588707671,
+    "databaseType": "sql",
+    "devDatabaseType": "postgresql",
+    "enableHibernateCache": false,
+    "enableTranslation": true,
+    "entities": [],
+    "feignClient": null,
+    "jhipsterVersion": "8.11.0",
+    "jwtSecretKey": "N2M3MzlmZWIxNWI1MzhjY2JiZTQ2YWRkNDMxOWRkYjYzM2E2MjQwNzliMTVlMjUxYzU5ODYwYzMzYTRjOGVlNDhiMGJlMWE5ODZkNjg2NmMyMWI4MWUyODZjMjlmMmExODc2NjA2NDk0ODEzZDU1MGRhYmU1NTNjNWEzODEwYjU=",
+    "languages": ["fr"],
+    "microfrontend": null,
+    "microfrontends": [],
+    "nativeLanguage": "fr",
+    "packageName": "com.soukayna.cabinet",
+    "prodDatabaseType": "postgresql",
+    "reactive": false,
+    "serverPort": null,
+    "serviceDiscoveryType": null,
+    "syncUserWithIdp": null,
+    "testFrameworks": [],
+    "withAdminUi": true
+  }
+}
