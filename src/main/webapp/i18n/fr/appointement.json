@@ -1,0 +1,28 @@
+{
+  "healthCareApp": {
+    "appointement": {
+      "home": {
+        "title": "Appointements",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Appointement",
+        "createOrEditLabel": "Créer ou éditer un Appointement",
+        "notFound": "Aucun Appointement trouvé"
+      },
+      "created": "Un nouveau Appointement a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Appointement avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Appointement avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Appointement {{ id }} ?"
+      },
+      "detail": {
+        "title": "Appointement"
+      },
+      "id": "ID",
+      "patientId": "Patient Id",
+      "duration": "Duration",
+      "status": "Status",
+      "type": "Type",
+      "patient": "Patient"
+    }
+  }
+}

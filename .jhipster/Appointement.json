@@ -1,0 +1,42 @@
+{
+  "annotations": {
+    "changelogDate": "20260203050932"
+  },
+  "dto": "no",
+  "fields": [
+    {
+      "fieldName": "patientId",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "duration",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "statusAppointement",
+      "fieldValues": "SCHEDULED,CONFIRMED,INPROGRESS,COMPLETED,CANCELED"
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "typeAppointement",
+      "fieldValues": "CONSULTATION,FOLLOW_UP,EMERGENCY,ROUTINE_CHECKUP,PROCEDURE"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Appointement",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "patient",
+      "otherEntityRelationshipName": "appointement",
+      "relationshipName": "patient",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

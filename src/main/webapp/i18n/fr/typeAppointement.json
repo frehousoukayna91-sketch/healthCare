@@ -1,0 +1,12 @@
+{
+  "healthCareApp": {
+    "typeAppointement": {
+      "null": "",
+      "CONSULTATION": "CONSULTATION",
+      "FOLLOW_UP": "FOLLOW_UP",
+      "EMERGENCY": "EMERGENCY",
+      "ROUTINE_CHECKUP": "ROUTINE_CHECKUP",
+      "PROCEDURE": "PROCEDURE"
+    }
+  }
+}

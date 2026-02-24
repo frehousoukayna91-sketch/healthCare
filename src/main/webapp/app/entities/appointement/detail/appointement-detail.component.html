@@ -1,0 +1,72 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (appointement(); as appointementRef) {
+      <div>
+        <h2 data-cy="appointementDetailsHeading"><span jhiTranslate="healthCareApp.appointement.detail.title">Appointement</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ appointementRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthCareApp.appointement.patientId">Patient Id</span></dt>
+          <dd>
+            <span>{{ appointementRef.patientId }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthCareApp.appointement.duration">Duration</span></dt>
+          <dd>
+            <span>{{ appointementRef.duration }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthCareApp.appointement.status">Status</span></dt>
+          <dd>
+            <span [jhiTranslate]="'healthCareApp.statusAppointement.' + (appointementRef.status ?? 'null')">{{
+              {
+                null: '',
+                SCHEDULED: 'SCHEDULED',
+                CONFIRMED: 'CONFIRMED',
+                INPROGRESS: 'INPROGRESS',
+                COMPLETED: 'COMPLETED',
+                CANCELED: 'CANCELED',
+              }[appointementRef.status ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthCareApp.appointement.type">Type</span></dt>
+          <dd>
+            <span [jhiTranslate]="'healthCareApp.typeAppointement.' + (appointementRef.type ?? 'null')">{{
+              {
+                null: '',
+                CONSULTATION: 'CONSULTATION',
+                FOLLOW_UP: 'FOLLOW_UP',
+                EMERGENCY: 'EMERGENCY',
+                ROUTINE_CHECKUP: 'ROUTINE_CHECKUP',
+                PROCEDURE: 'PROCEDURE',
+              }[appointementRef.type ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthCareApp.appointement.patient">Patient</span></dt>
+          <dd>
+            @if (appointement()!.patient) {
+              <div>
+                <a [routerLink]="['/patient', appointement()!.patient?.id, 'view']">{{ appointementRef.patient?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+        </button>
+
+        <button type="button" [routerLink]="['/appointement', appointementRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

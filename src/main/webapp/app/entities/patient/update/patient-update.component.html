@@ -1,0 +1,150 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-patient-heading" data-cy="PatientCreateUpdateHeading" jhiTranslate="healthCareApp.patient.home.createOrEditLabel">
+        Créer ou éditer un Patient
+      </h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="healthCareApp.patient.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_nom" jhiTranslate="healthCareApp.patient.nom">Nom</label>
+          <input type="text" class="form-control" name="nom" id="field_nom" data-cy="nom" formControlName="nom" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_lastName" jhiTranslate="healthCareApp.patient.lastName">Last Name</label>
+          <input type="text" class="form-control" name="lastName" id="field_lastName" data-cy="lastName" formControlName="lastName" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_firstName" jhiTranslate="healthCareApp.patient.firstName">First Name</label>
+          <input type="text" class="form-control" name="firstName" id="field_firstName" data-cy="firstName" formControlName="firstName" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dateBirth" jhiTranslate="healthCareApp.patient.dateBirth">Date Birth</label>
+          <div class="input-group">
+            <input
+              id="field_dateBirth"
+              data-cy="dateBirth"
+              type="text"
+              class="form-control"
+              name="dateBirth"
+              ngbDatepicker
+              #dateBirthDp="ngbDatepicker"
+              formControlName="dateBirth"
+            />
+            <button type="button" class="btn btn-secondary" (click)="dateBirthDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_phone" jhiTranslate="healthCareApp.patient.phone">Phone</label>
+          <input type="text" class="form-control" name="phone" id="field_phone" data-cy="phone" formControlName="phone" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_email" jhiTranslate="healthCareApp.patient.email">Email</label>
+          <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_address" jhiTranslate="healthCareApp.patient.address">Address</label>
+          <input type="text" class="form-control" name="address" id="field_address" data-cy="address" formControlName="address" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_bloodType" jhiTranslate="healthCareApp.patient.bloodType">Blood Type</label>
+          <input type="text" class="form-control" name="bloodType" id="field_bloodType" data-cy="bloodType" formControlName="bloodType" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_allergies" jhiTranslate="healthCareApp.patient.allergies">Allergies</label>
+          <input type="text" class="form-control" name="allergies" id="field_allergies" data-cy="allergies" formControlName="allergies" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_notes" jhiTranslate="healthCareApp.patient.notes">Notes</label>
+          <input type="text" class="form-control" name="notes" id="field_notes" data-cy="notes" formControlName="notes" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_emergencyContactName" jhiTranslate="healthCareApp.patient.emergencyContactName"
+            >Emergency Contact Name</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="emergencyContactName"
+            id="field_emergencyContactName"
+            data-cy="emergencyContactName"
+            formControlName="emergencyContactName"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_emeregencyContactPhone" jhiTranslate="healthCareApp.patient.emeregencyContactPhone"
+            >Emeregency Contact Phone</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="emeregencyContactPhone"
+            id="field_emeregencyContactPhone"
+            data-cy="emeregencyContactPhone"
+            formControlName="emeregencyContactPhone"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_chronicdiseases" jhiTranslate="healthCareApp.patient.chronicdiseases">Chronicdiseases</label>
+          <input
+            type="text"
+            class="form-control"
+            name="chronicdiseases"
+            id="field_chronicdiseases"
+            data-cy="chronicdiseases"
+            formControlName="chronicdiseases"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_medicalHistory" jhiTranslate="healthCareApp.patient.medicalHistory">Medical History</label>
+          <input
+            type="text"
+            class="form-control"
+            name="medicalHistory"
+            id="field_medicalHistory"
+            data-cy="medicalHistory"
+            formControlName="medicalHistory"
+          />
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Annuler</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Sauvegarder</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

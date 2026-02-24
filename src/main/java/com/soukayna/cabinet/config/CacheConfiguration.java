@@ -37,6 +37,9 @@ public class CacheConfiguration {
             createCache(cm, com.soukayna.cabinet.repository.UserRepository.USERS_BY_LOGIN_CACHE);
             createCache(cm, com.soukayna.cabinet.repository.UserRepository.USERS_BY_EMAIL_CACHE);
             createCache(cm, com.soukayna.cabinet.domain.Authority.class.getName());
+            createCache(cm, com.soukayna.cabinet.domain.Patient.class.getName());
+            createCache(cm, com.soukayna.cabinet.domain.Patient.class.getName() + ".appointements");
+            createCache(cm, com.soukayna.cabinet.domain.Appointement.class.getName());
             // jhipster-needle-caffeine-add-entry
         };
     }

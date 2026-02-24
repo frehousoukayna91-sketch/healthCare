@@ -1,0 +1,71 @@
+{
+  "annotations": {
+    "changelogDate": "20260130051748"
+  },
+  "dto": "no",
+  "fields": [
+    {
+      "fieldName": "nom",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "firstName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateBirth",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "phone",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "address",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "bloodType",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "allergies",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "notes",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "emergencyContactName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "emeregencyContactPhone",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "chronicdiseases",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "medicalHistory",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Patient",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}
