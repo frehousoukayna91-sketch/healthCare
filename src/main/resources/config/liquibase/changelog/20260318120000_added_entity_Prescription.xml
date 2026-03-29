@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="20260318120000-1" author="codex">
+        <createTable tableName="prescription">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="patient_id" type="integer"/>
+            <column name="prescription_date" type="date"/>
+            <column name="diagnosis" type="varchar(255)"/>
+            <column name="followup_date" type="date"/>
+            <column name="notes" type="varchar(2000)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20260318120000-2" author="codex">
+        <addColumn tableName="prescription_item">
+            <column name="prescription_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20260318120000-3" author="codex">
+        <addForeignKeyConstraint
+            baseColumnNames="prescription_id"
+            baseTableName="prescription_item"
+            constraintName="fk_prescription_item__prescription_id"
+            referencedColumnNames="id"
+            referencedTableName="prescription"/>
+    </changeSet>
+
+</databaseChangeLog>

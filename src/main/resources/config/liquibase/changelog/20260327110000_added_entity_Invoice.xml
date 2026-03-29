@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="20260327110000-1" author="codex">
+        <createTable tableName="invoice">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="invoice_number" type="varchar(255)"/>
+            <column name="patient_id" type="integer"/>
+            <column name="patient_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="appointment_id" type="varchar(255)"/>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="due_date" type="date"/>
+            <column name="subtotal" type="decimal(21,2)"/>
+            <column name="tax" type="decimal(21,2)"/>
+            <column name="total" type="decimal(21,2)"/>
+            <column name="status" type="varchar(50)"/>
+            <column name="payment_method" type="varchar(50)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20260327110000-2" author="codex">
+        <createTable tableName="invoice_item">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)"/>
+            <column name="quantity" type="integer"/>
+            <column name="unit_price" type="decimal(21,2)"/>
+            <column name="total" type="decimal(21,2)"/>
+            <column name="invoice_id" type="bigint"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20260327110000-3" author="codex">
+        <addForeignKeyConstraint
+            baseColumnNames="invoice_id"
+            baseTableName="invoice_item"
+            constraintName="fk_invoice_item__invoice_id"
+            referencedColumnNames="id"
+            referencedTableName="invoice"/>
+    </changeSet>
+
+</databaseChangeLog>

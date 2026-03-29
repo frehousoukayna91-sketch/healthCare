@@ -14,6 +14,10 @@
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260130051748_added_entity_Patient.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260203050932_added_entity_Appointement.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260304160000_added_fields_Appointement.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260305120000_added_entity_PrescriptionItem.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260318120000_added_entity_Prescription.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260327110000_added_entity_Invoice.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20260203050932_added_entity_constraints_Appointement.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->

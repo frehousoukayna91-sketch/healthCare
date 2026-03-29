@@ -96,7 +96,7 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://127.0.0.1:5432/healthCare
     username: postgres
     password: admin
 
@@ -104,7 +104,7 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
     properties:
-      jakarta.persistence.jdbc.url: jdbc:postgresql://localhost:5432/postgres
+      jakarta.persistence.jdbc.url: jdbc:postgresql://127.0.0.1:5432/healthCare
       jakarta.persistence.jdbc.user: postgres
       jakarta.persistence.jdbc.password: admin
       hibernate.jdbc.time_zone: UTC
@@ -204,14 +204,14 @@ jhipster:
     name: 'healthCareApp'
   # By default CORS is disabled. Uncomment to enable.
   # cors:
-  #   allowed-origins: "http://localhost:8100,http://localhost:9000"
+  #   allowed-origins: "http://127.0.0.1:8100,http://127.0.0.1:9000"
   #   allowed-methods: "*"
   #   allowed-headers: "*"
   #   exposed-headers: "Authorization,Link,X-Total-Count,X-${jhipster.clientApp.name}-alert,X-${jhipster.clientApp.name}-error,X-${jhipster.clientApp.name}-params"
   #   allow-credentials: true
   #   max-age: 1800
   mail:
-    from: healthCare@localhost
+    from: healthCare@127.0.0.1
   api-docs:
     default-include-pattern: /api/**
     management-include-pattern: /management/**

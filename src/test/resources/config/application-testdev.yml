@@ -9,12 +9,14 @@
 # ===================================================================
 
 spring:
+  application:
+    name: healthCare
+
   datasource:
-    type: com.zaxxer.hikari.HikariDataSource
-    hikari:
-      auto-commit: false
-      poolName: Hikari
-      maximum-pool-size: 1
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/healthCare
+    username: postgres
+    password: admin
   jpa:
     open-in-view: false
     hibernate:

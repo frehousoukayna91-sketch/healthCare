@@ -55,6 +55,18 @@ public class AppointementServiceImpl implements AppointementService {
                 if (appointement.getType() != null) {
                     existingAppointement.setType(appointement.getType());
                 }
+                if (appointement.getAppointementDate() != null) {
+                    existingAppointement.setAppointementDate(appointement.getAppointementDate());
+                }
+                if (appointement.getAppointementTime() != null) {
+                    existingAppointement.setAppointementTime(appointement.getAppointementTime());
+                }
+                if (appointement.getReasonAppointement() != null) {
+                    existingAppointement.setReasonAppointement(appointement.getReasonAppointement());
+                }
+                if (appointement.getNotes() != null) {
+                    existingAppointement.setNotes(appointement.getNotes());
+                }
 
                 return existingAppointement;
             })

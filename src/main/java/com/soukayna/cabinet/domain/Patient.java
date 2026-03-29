@@ -1,5 +1,6 @@
 package com.soukayna.cabinet.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.io.Serializable;
@@ -33,6 +34,7 @@ public class Patient implements Serializable {
     private String firstName;
 
     @Column(name = "date_birth")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate dateBirth;
 
     @Column(name = "phone")

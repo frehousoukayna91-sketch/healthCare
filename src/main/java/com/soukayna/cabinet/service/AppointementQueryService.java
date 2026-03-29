@@ -71,6 +71,9 @@ public class AppointementQueryService extends QueryService<Appointement> {
                 buildRangeSpecification(criteria.getDuration(), Appointement_.duration),
                 buildSpecification(criteria.getStatus(), Appointement_.status),
                 buildSpecification(criteria.getType(), Appointement_.type),
+                buildRangeSpecification(criteria.getAppointementDate(), Appointement_.appointementDate),
+                buildStringSpecification(criteria.getReasonAppointement(), Appointement_.reasonAppointement),
+                buildStringSpecification(criteria.getNotes(), Appointement_.notes),
                 buildSpecification(criteria.getPatientId(), root -> root.join(Appointement_.patient, JoinType.LEFT).get(Patient_.id))
             );
         }

@@ -1,10 +1,13 @@
 package com.soukayna.cabinet.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.soukayna.cabinet.domain.enumeration.statusAppointement;
 import com.soukayna.cabinet.domain.enumeration.typeAppointement;
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 /**
  * A Appointement.
@@ -36,6 +39,19 @@ public class Appointement implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private typeAppointement type;
+
+    @Column(name = "appointement_date")
+    private LocalDate appointementDate;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+    @Column(name = "appointement_time")
+    private LocalTime appointementTime;
+
+    @Column(name = "reason_appointement")
+    private String reasonAppointement;
+
+    @Column(name = "notes")
+    private String notes;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "appointements" }, allowSetters = true)
@@ -108,6 +124,58 @@ public class Appointement implements Serializable {
         this.type = type;
     }
 
+    public LocalDate getAppointementDate() {
+        return this.appointementDate;
+    }
+
+    public Appointement appointementDate(LocalDate appointementDate) {
+        this.setAppointementDate(appointementDate);
+        return this;
+    }
+
+    public void setAppointementDate(LocalDate appointementDate) {
+        this.appointementDate = appointementDate;
+    }
+
+    public LocalTime getAppointementTime() {
+        return this.appointementTime;
+    }
+
+    public Appointement appointementTime(LocalTime appointementTime) {
+        this.setAppointementTime(appointementTime);
+        return this;
+    }
+
+    public void setAppointementTime(LocalTime appointementTime) {
+        this.appointementTime = appointementTime;
+    }
+
+    public String getReasonAppointement() {
+        return this.reasonAppointement;
+    }
+
+    public Appointement reasonAppointement(String reasonAppointement) {
+        this.setReasonAppointement(reasonAppointement);
+        return this;
+    }
+
+    public void setReasonAppointement(String reasonAppointement) {
+        this.reasonAppointement = reasonAppointement;
+    }
+
+    public String getNotes() {
+        return this.notes;
+    }
+
+    public Appointement notes(String notes) {
+        this.setNotes(notes);
+        return this;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
     public Patient getPatient() {
         return this.patient;
     }
@@ -148,6 +216,10 @@ public class Appointement implements Serializable {
             ", duration=" + getDuration() +
             ", status='" + getStatus() + "'" +
             ", type='" + getType() + "'" +
+            ", appointementDate='" + getAppointementDate() + "'" +
+            ", appointementTime='" + getAppointementTime() + "'" +
+            ", reasonAppointement='" + getReasonAppointement() + "'" +
+            ", notes='" + getNotes() + "'" +
             "}";
     }
 }

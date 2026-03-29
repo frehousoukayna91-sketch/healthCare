@@ -158,6 +158,39 @@ public class PatientResource {
     }
 
     /**
+     * {@code GET  /patients/search} : search patients with a free-text query.
+     *
+     * @param query the free-text query.
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the matching list in body.
+     */
+    @GetMapping("/search")
+    public ResponseEntity<List<Patient>> searchPatients(
+        @RequestParam("query") String query,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        LOG.debug("REST request to search Patients by query: {}", query);
+
+        String normalizedQuery = query == null ? "" : query.trim();
+        if (
+            normalizedQuery.length() >= 2 &&
+            ((normalizedQuery.startsWith("\"") && normalizedQuery.endsWith("\"")) ||
+                (normalizedQuery.startsWith("'") && normalizedQuery.endsWith("'")))
+        ) {
+            normalizedQuery = normalizedQuery.substring(1, normalizedQuery.length() - 1).trim();
+        }
+
+        Page<Patient> page = normalizedQuery.isBlank() ? Page.empty(pageable) : patientRepository.search(normalizedQuery, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/hello")
+    public String getHello() {
+        return "Hello World";
+    }
+
+    /**
      * {@code GET  /patients/count} : count all the patients.
      *
      * @param criteria the criteria which the requested entities should match.

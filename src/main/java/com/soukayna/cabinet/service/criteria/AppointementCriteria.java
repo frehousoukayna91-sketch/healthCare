@@ -66,6 +66,12 @@ public class AppointementCriteria implements Serializable, Criteria {
 
     private typeAppointementFilter type;
 
+    private LocalDateFilter appointementDate;
+
+    private StringFilter reasonAppointement;
+
+    private StringFilter notes;
+
     private IntegerFilter patientId;
 
     private Boolean distinct;
@@ -78,6 +84,9 @@ public class AppointementCriteria implements Serializable, Criteria {
         this.duration = other.optionalDuration().map(IntegerFilter::copy).orElse(null);
         this.status = other.optionalStatus().map(statusAppointementFilter::copy).orElse(null);
         this.type = other.optionalType().map(typeAppointementFilter::copy).orElse(null);
+        this.appointementDate = other.optionalAppointementDate().map(LocalDateFilter::copy).orElse(null);
+        this.reasonAppointement = other.optionalReasonAppointement().map(StringFilter::copy).orElse(null);
+        this.notes = other.optionalNotes().map(StringFilter::copy).orElse(null);
         this.distinct = other.distinct;
     }
 
@@ -177,6 +186,63 @@ public class AppointementCriteria implements Serializable, Criteria {
         this.patientId = patientId;
     }
 
+    public LocalDateFilter getAppointementDate() {
+        return appointementDate;
+    }
+
+    public Optional<LocalDateFilter> optionalAppointementDate() {
+        return Optional.ofNullable(appointementDate);
+    }
+
+    public LocalDateFilter appointementDate() {
+        if (appointementDate == null) {
+            setAppointementDate(new LocalDateFilter());
+        }
+        return appointementDate;
+    }
+
+    public void setAppointementDate(LocalDateFilter appointementDate) {
+        this.appointementDate = appointementDate;
+    }
+
+    public StringFilter getReasonAppointement() {
+        return reasonAppointement;
+    }
+
+    public Optional<StringFilter> optionalReasonAppointement() {
+        return Optional.ofNullable(reasonAppointement);
+    }
+
+    public StringFilter reasonAppointement() {
+        if (reasonAppointement == null) {
+            setReasonAppointement(new StringFilter());
+        }
+        return reasonAppointement;
+    }
+
+    public void setReasonAppointement(StringFilter reasonAppointement) {
+        this.reasonAppointement = reasonAppointement;
+    }
+
+    public StringFilter getNotes() {
+        return notes;
+    }
+
+    public Optional<StringFilter> optionalNotes() {
+        return Optional.ofNullable(notes);
+    }
+
+    public StringFilter notes() {
+        if (notes == null) {
+            setNotes(new StringFilter());
+        }
+        return notes;
+    }
+
+    public void setNotes(StringFilter notes) {
+        this.notes = notes;
+    }
+
     public Boolean getDistinct() {
         return distinct;
     }
@@ -211,6 +277,9 @@ public class AppointementCriteria implements Serializable, Criteria {
             Objects.equals(duration, that.duration) &&
             Objects.equals(status, that.status) &&
             Objects.equals(type, that.type) &&
+            Objects.equals(appointementDate, that.appointementDate) &&
+            Objects.equals(reasonAppointement, that.reasonAppointement) &&
+            Objects.equals(notes, that.notes) &&
             Objects.equals(patientId, that.patientId) &&
             Objects.equals(distinct, that.distinct)
         );
@@ -218,7 +287,7 @@ public class AppointementCriteria implements Serializable, Criteria {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, patientId, duration, status, type, patientId, distinct);
+        return Objects.hash(id, patientId, duration, status, type, appointementDate, reasonAppointement, notes, patientId, distinct);
     }
 
     // prettier-ignore
@@ -230,6 +299,9 @@ public class AppointementCriteria implements Serializable, Criteria {
             optionalDuration().map(f -> "duration=" + f + ", ").orElse("") +
             optionalStatus().map(f -> "status=" + f + ", ").orElse("") +
             optionalType().map(f -> "type=" + f + ", ").orElse("") +
+            optionalAppointementDate().map(f -> "appointementDate=" + f + ", ").orElse("") +
+            optionalReasonAppointement().map(f -> "reasonAppointement=" + f + ", ").orElse("") +
+            optionalNotes().map(f -> "notes=" + f + ", ").orElse("") +
             optionalPatientId().map(f -> "patientId=" + f + ", ").orElse("") +
             optionalDistinct().map(f -> "distinct=" + f + ", ").orElse("") +
         "}";

@@ -20,6 +20,7 @@ logging:
     org.hibernate.SQL: DEBUG
     com.soukayna.cabinet: DEBUG
     com.healthcare.app: DEBUG
+    com.zaxxer.hikari: DEBUG
 
   autoconfigure:
     exclude:
@@ -82,4 +83,13 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
+spring:
+  application:
+    name: healthCare
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/healthCare
+    username: postgres
+    password: admin
 # application:

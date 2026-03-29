@@ -1,7 +1,9 @@
 package com.soukayna.cabinet.web.rest;
 
 import com.soukayna.cabinet.domain.Appointement;
+import com.soukayna.cabinet.domain.enumeration.statusAppointement;
 import com.soukayna.cabinet.repository.AppointementRepository;
+import com.soukayna.cabinet.repository.PatientRepository;
 import com.soukayna.cabinet.service.AppointementQueryService;
 import com.soukayna.cabinet.service.AppointementService;
 import com.soukayna.cabinet.service.criteria.AppointementCriteria;
@@ -9,6 +11,7 @@ import com.soukayna.cabinet.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -42,15 +45,19 @@ public class AppointementResource {
 
     private final AppointementRepository appointementRepository;
 
+    private final PatientRepository patientRepository;
+
     private final AppointementQueryService appointementQueryService;
 
     public AppointementResource(
         AppointementService appointementService,
         AppointementRepository appointementRepository,
+        PatientRepository patientRepository,
         AppointementQueryService appointementQueryService
     ) {
         this.appointementService = appointementService;
         this.appointementRepository = appointementRepository;
+        this.patientRepository = patientRepository;
         this.appointementQueryService = appointementQueryService;
     }
 
@@ -67,6 +74,7 @@ public class AppointementResource {
         if (appointement.getId() != null) {
             throw new BadRequestAlertException("A new appointement cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        validatePatientRequiredForCreate(appointement);
         appointement = appointementService.save(appointement);
         return ResponseEntity.created(new URI("/api/appointements/" + appointement.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, appointement.getId().toString()))
@@ -100,6 +108,7 @@ public class AppointementResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
+        validatePatientIfProvided(appointement);
         appointement = appointementService.update(appointement);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, appointement.getId().toString()))
@@ -134,6 +143,7 @@ public class AppointementResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
+        validatePatientIfProvided(appointement);
         Optional<Appointement> result = appointementService.partialUpdate(appointement);
 
         return ResponseUtil.wrapOrNotFound(
@@ -157,6 +167,50 @@ public class AppointementResource {
         LOG.debug("REST request to get Appointements by criteria: {}", criteria);
 
         Page<Appointement> page = appointementQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /appointements/search/by-status} : search appointements by status.
+     *
+     * @param status the appointment status.
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the matching list in body.
+     */
+    @GetMapping("/search/by-status")
+    public ResponseEntity<List<Appointement>> searchAppointementsByStatus(
+        @RequestParam("status") String status,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        LOG.debug("REST request to search Appointements by status: {}", status);
+
+        String normalizedStatus = status == null ? "" : status.trim();
+        if (
+            normalizedStatus.length() >= 2 &&
+            ((normalizedStatus.startsWith("\"") && normalizedStatus.endsWith("\"")) ||
+                (normalizedStatus.startsWith("'") && normalizedStatus.endsWith("'")))
+        ) {
+            normalizedStatus = normalizedStatus.substring(1, normalizedStatus.length() - 1).trim();
+        }
+        if (normalizedStatus.isBlank()) {
+            throw new BadRequestAlertException("Status is required", ENTITY_NAME, "statusrequired");
+        }
+
+        if ("all".equalsIgnoreCase(normalizedStatus)) {
+            Page<Appointement> page = appointementRepository.findAll(pageable);
+            HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+            return ResponseEntity.ok().headers(headers).body(page.getContent());
+        }
+
+        final statusAppointement statusEnum;
+        try {
+            statusEnum = statusAppointement.valueOf(normalizedStatus.toUpperCase(Locale.ROOT));
+        } catch (IllegalArgumentException ex) {
+            throw new BadRequestAlertException("Invalid status value", ENTITY_NAME, "statusinvalid");
+        }
+
+        Page<Appointement> page = appointementRepository.findByStatus(statusEnum, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -199,5 +253,24 @@ public class AppointementResource {
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    private void validatePatientRequiredForCreate(Appointement appointement) {
+        if (appointement.getPatient() == null || appointement.getPatient().getId() == null) {
+            throw new BadRequestAlertException("Invalid patient id", ENTITY_NAME, "patientidnull");
+        }
+        validatePatientIfProvided(appointement);
+    }
+
+    private void validatePatientIfProvided(Appointement appointement) {
+        if (appointement.getPatient() == null) {
+            return;
+        }
+        if (appointement.getPatient().getId() == null) {
+            throw new BadRequestAlertException("Invalid patient id", ENTITY_NAME, "patientidnull");
+        }
+        if (!patientRepository.existsById(appointement.getPatient().getId())) {
+            throw new BadRequestAlertException("Patient not found", ENTITY_NAME, "patientnotfound");
+        }
     }
 }
