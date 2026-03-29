@@ -6,6 +6,7 @@ import com.soukayna.cabinet.service.PatientQueryService;
 import com.soukayna.cabinet.service.PatientService;
 import com.soukayna.cabinet.service.criteria.PatientCriteria;
 import com.soukayna.cabinet.web.rest.errors.BadRequestAlertException;
+import com.soukayna.cabinet.web.rest.vm.PatientHistoryVM;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -185,9 +186,55 @@ public class PatientResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
-    @GetMapping("/hello")
-    public String getHello() {
-        return "Hello World";
+    /**
+     * {@code GET /patients/:id/history} : get full patient history like patient_history view.
+     *
+     * @param id the id of the patient.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and patient history rows in body,
+     * or {@code 404 (Not Found)} if patient does not exist.
+     */
+    @GetMapping("/{id}/history")
+    public ResponseEntity<List<PatientHistoryVM>> getPatientHistory(@PathVariable("id") Integer id) {
+        LOG.debug("REST request to get Patient history : {}", id);
+        if (!patientRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        List<PatientHistoryVM> history = patientRepository
+            .findPatientHistoryByPatientId(id)
+            .stream()
+            .map(row ->
+                new PatientHistoryVM(
+                    row.getPatientId(),
+                    row.getFirstName(),
+                    row.getLastName(),
+                    row.getDateOfBirth(),
+                    row.getGender(),
+                    row.getPhone(),
+                    row.getEmail(),
+                    row.getBloodType(),
+                    row.getAllergies(),
+                    row.getMedicalConditions(),
+                    row.getAppointmentId(),
+                    row.getAppointmentDate(),
+                    row.getAppointmentTime(),
+                    row.getAppointmentType(),
+                    row.getAppointmentStatus(),
+                    row.getReason(),
+                    row.getPrescriptionId(),
+                    row.getPrescriptionDate(),
+                    row.getDiagnosis(),
+                    row.getMedications(),
+                    row.getInvoiceId(),
+                    row.getInvoiceNumber(),
+                    row.getInvoiceDate(),
+                    row.getInvoiceTotal(),
+                    row.getInvoiceStatus()
+                )
+            )
+            .toList();
+
+        return ResponseEntity.ok(history);
     }
 
     /**
