@@ -1,83 +1,172 @@
-<div class="row">
-  <div class="col-md-3">
-    <span class="hipster img-fluid rounded"></span>
+@if (account() === null) {
+  <div class="auth-prompt">
+    <h1 jhiTranslate="home.title">Bienvenue sur MediCare</h1>
+    <p class="lead" jhiTranslate="home.subtitle">Connectez-vous pour accéder à votre tableau de bord.</p>
+    <div class="alert alert-warning">
+      <span jhiTranslate="global.messages.info.authenticated.prefix">Si vous voulez vous </span>
+      <a class="alert-link" (click)="login()" jhiTranslate="global.messages.info.authenticated.link">connecter</a>
+    </div>
   </div>
+} @else {
+  <div class="dashboard">
+    <header class="dashboard-header">
+      <h1 jhiTranslate="dashboard.title">Tableau de bord</h1>
+      <p jhiTranslate="dashboard.welcome">Bienvenue ! Voici ce qui se passe aujourd'hui.</p>
+    </header>
 
-  <div class="col-md-9">
-    <h1 class="display-4"><span jhiTranslate="home.title">Bienvenue, Java Hipster !</span> (Health Care)</h1>
-
-    <p class="lead" jhiTranslate="home.subtitle">Ceci est votre page d&apos;accueil</p>
-
-    <div>
-      @if (account() !== null) {
-        <div class="alert alert-success">
-          @if (account(); as accountRef) {
-            <span id="home-logged-message" jhiTranslate="home.logged.message" [translateValues]="{ username: accountRef.login }"
-              >Vous êtes connecté en tant que &quot;{{ accountRef.login }}&quot;.</span
-            >
-          }
+    <section class="stat-grid">
+      <a routerLink="/patient" class="stat-card stat-card--blue">
+        <div class="stat-card-text">
+          <span class="stat-card-label" jhiTranslate="dashboard.stats.totalPatients">Total des patients</span>
+          <span class="stat-card-value">{{ totalPatients() }}</span>
+          <span class="stat-card-meta" jhiTranslate="dashboard.stats.activePatients">Patients actifs</span>
         </div>
-      } @else {
-        <div class="alert alert-warning">
-          <span jhiTranslate="global.messages.info.authenticated.prefix">Si vous voulez vous </span>
-          <a class="alert-link" (click)="login()" jhiTranslate="global.messages.info.authenticated.link">connecter</a
-          ><span jhiTranslate="global.messages.info.authenticated.suffix"
-            >, vous pouvez utiliser les comptes par défaut : <br />
-            - Administrateur (nom d&apos;utilisateur=&quot;admin&quot; et mot de passe =&quot;admin&quot;) <br />
-            - Utilisateur (nom d&apos;utilisateur=&quot;user&quot; et mot de passe =&quot;user&quot;).</span
+        <div class="stat-card-icon">
+          <i class="pi pi-users"></i>
+        </div>
+      </a>
+
+      <a routerLink="/appointement" class="stat-card stat-card--teal">
+        <div class="stat-card-text">
+          <span class="stat-card-label" jhiTranslate="dashboard.stats.todayAppointments">Rendez-vous du jour</span>
+          <span class="stat-card-value">{{ todayCount() }}</span>
+          <span class="stat-card-meta">{{ todayLabel }}</span>
+        </div>
+        <div class="stat-card-icon">
+          <i class="pi pi-calendar"></i>
+        </div>
+      </a>
+
+      <a routerLink="/invoice" class="stat-card stat-card--orange">
+        <div class="stat-card-text">
+          <span class="stat-card-label" jhiTranslate="dashboard.stats.pendingInvoices">Factures en attente</span>
+          <span class="stat-card-value">{{ pendingCount() }}</span>
+          <span class="stat-card-meta"
+            >{{ pendingOutstanding() | number: '1.2-2' }} € <span jhiTranslate="dashboard.stats.outstanding">à régler</span></span
           >
         </div>
-
-        <div class="alert alert-warning">
-          <span jhiTranslate="global.messages.info.register.noaccount">Vous n&apos;avez pas encore de compte ?</span>&nbsp;
-          <a class="alert-link" routerLink="/account/register" jhiTranslate="global.messages.info.register.link">Créer un compte</a>
+        <div class="stat-card-icon">
+          <i class="pi pi-file"></i>
         </div>
-      }
-    </div>
+      </a>
 
-    <p jhiTranslate="home.question">Si vous avez des questions à propos de JHipster :</p>
+      <div class="stat-card stat-card--purple">
+        <div class="stat-card-text">
+          <span class="stat-card-label" jhiTranslate="dashboard.stats.monthlyRevenue">Revenus mensuels</span>
+          <span class="stat-card-value">{{ monthlyRevenue() | number: '1.2-2' }} €</span>
+          <span class="stat-card-meta">{{ monthLabel }}</span>
+        </div>
+        <div class="stat-card-icon">
+          <i class="pi pi-chart-line"></i>
+        </div>
+      </div>
+    </section>
 
-    <ul>
-      <li>
-        <a href="https://www.jhipster.tech/" target="_blank" rel="noopener noreferrer" jhiTranslate="home.link.homepage"
-          >Page d&apos;accueil de JHipster</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://stackoverflow.com/tags/jhipster/info"
-          target="_blank"
-          rel="noopener noreferrer"
-          jhiTranslate="home.link.stackoverflow"
-          >JHipster sur Stack Overflow</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/jhipster/generator-jhipster/issues?state=open"
-          target="_blank"
-          rel="noopener noreferrer"
-          jhiTranslate="home.link.bugtracker"
-          >JHipster bug tracker</a
-        >
-      </li>
-      <li>
-        <a href="https://gitter.im/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer" jhiTranslate="home.link.chat"
-          >JHipster public chat room</a
-        >
-      </li>
-      <li>
-        <a href="https://twitter.com/jhipster" target="_blank" rel="noopener noreferrer" jhiTranslate="home.link.follow"
-          >Suivez &#64;jhipster sur Twitter</a
-        >
-      </li>
-    </ul>
+    <section class="dashboard-grid">
+      <div class="panel panel--main">
+        <div class="panel-header">
+          <div>
+            <h2 jhiTranslate="dashboard.todayAppointments.title">Rendez-vous du jour</h2>
+            <p class="panel-subtitle">{{ todayLabel }}</p>
+          </div>
+          <a routerLink="/appointement" class="panel-link">
+            <span jhiTranslate="dashboard.viewAll">Voir tout</span>
+            <i class="pi pi-chevron-right"></i>
+          </a>
+        </div>
 
-    <p>
-      <span jhiTranslate="home.like">Si vous aimez JHipster, donnez nous une étoile sur</span>
-      <a href="https://github.com/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer" jhiTranslate="home.github"
-        >GitHub </a
-      >!
-    </p>
+        @if (todayAppointments().length === 0) {
+          <div class="empty-state">
+            <i class="pi pi-clock empty-state-icon"></i>
+            <p class="empty-state-title" jhiTranslate="dashboard.todayAppointments.empty">Aucun rendez-vous aujourd'hui</p>
+            <p class="empty-state-hint" jhiTranslate="dashboard.todayAppointments.emptyHint">
+              Planifiez de nouveaux rendez-vous pour les voir apparaître ici
+            </p>
+          </div>
+        } @else {
+          <ul class="list">
+            @for (appt of todayAppointments(); track appt.id) {
+              <li class="list-item">
+                <div class="list-item-icon list-item-icon--teal"><i class="pi pi-calendar"></i></div>
+                <div class="list-item-body">
+                  <div class="list-item-title">{{ appt.patient?.firstName }} {{ appt.patient?.lastName }}</div>
+                  <div class="list-item-sub">{{ appt.appointementTime }} · {{ appt.reasonAppointement }}</div>
+                </div>
+                <span class="badge badge--teal">{{ appt.status }}</span>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+
+      <div class="panel-stack">
+        <div class="panel">
+          <div class="panel-header">
+            <h2 jhiTranslate="dashboard.quickActions.title">Actions rapides</h2>
+          </div>
+          <div class="action-list">
+            <a routerLink="/patient" class="action-item">
+              <div class="action-icon action-icon--blue"><i class="pi pi-user-plus"></i></div>
+              <div class="action-body">
+                <span class="action-title" jhiTranslate="dashboard.quickActions.newPatient">Nouveau patient</span>
+                <span class="action-sub" jhiTranslate="dashboard.quickActions.newPatientHint">Enregistrer un nouveau patient</span>
+              </div>
+              <i class="pi pi-arrow-up-right action-arrow"></i>
+            </a>
+            <a routerLink="/appointement/new" class="action-item">
+              <div class="action-icon action-icon--teal"><i class="pi pi-calendar-plus"></i></div>
+              <div class="action-body">
+                <span class="action-title" jhiTranslate="dashboard.quickActions.scheduleAppointment">Planifier un rendez-vous</span>
+                <span class="action-sub" jhiTranslate="dashboard.quickActions.scheduleAppointmentHint">Réserver un créneau</span>
+              </div>
+              <i class="pi pi-arrow-up-right action-arrow"></i>
+            </a>
+            <a routerLink="/prescription/new" class="action-item">
+              <div class="action-icon action-icon--purple"><i class="pi pi-file-edit"></i></div>
+              <div class="action-body">
+                <span class="action-title" jhiTranslate="dashboard.quickActions.newPrescription">Nouvelle prescription</span>
+                <span class="action-sub" jhiTranslate="dashboard.quickActions.newPrescriptionHint">Créer une prescription</span>
+              </div>
+              <i class="pi pi-arrow-up-right action-arrow"></i>
+            </a>
+            <a routerLink="/invoice" class="action-item">
+              <div class="action-icon action-icon--orange"><i class="pi pi-file"></i></div>
+              <div class="action-body">
+                <span class="action-title" jhiTranslate="dashboard.quickActions.createInvoice">Créer une facture</span>
+                <span class="action-sub" jhiTranslate="dashboard.quickActions.createInvoiceHint">Facturer un patient</span>
+              </div>
+              <i class="pi pi-arrow-up-right action-arrow"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <h2 jhiTranslate="dashboard.recentPrescriptions.title">Prescriptions récentes</h2>
+            <a routerLink="/prescription" class="panel-link">
+              <span jhiTranslate="dashboard.viewAll">Voir tout</span>
+              <i class="pi pi-chevron-right"></i>
+            </a>
+          </div>
+          @if (recentPrescriptions().length === 0) {
+            <div class="empty-state empty-state--small">
+              <p class="empty-state-hint" jhiTranslate="dashboard.recentPrescriptions.empty">Aucune prescription récente</p>
+            </div>
+          } @else {
+            <ul class="list">
+              @for (p of recentPrescriptions(); track p.id) {
+                <li class="list-item">
+                  <div class="list-item-icon list-item-icon--purple"><i class="pi pi-file-edit"></i></div>
+                  <div class="list-item-body">
+                    <div class="list-item-title">{{ p.diagnosis || ('dashboard.recentPrescriptions.untitled' | translate) }}</div>
+                    <div class="list-item-sub">{{ p.prescriptionDate ? p.prescriptionDate.format('DD MMM YYYY') : '' }}</div>
+                  </div>
+                </li>
+              }
+            </ul>
+          }
+        </div>
+      </div>
+    </section>
   </div>
-</div>
+}

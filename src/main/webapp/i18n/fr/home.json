@@ -1,19 +1,43 @@
 {
   "home": {
-    "title": "Bienvenue, Java Hipster !",
-    "subtitle": "Ceci est votre page d'accueil",
+    "title": "Bienvenue sur MediCare",
+    "subtitle": "Connectez-vous pour accéder à votre tableau de bord.",
     "logged": {
       "message": "Vous êtes connecté en tant que \"{{username}}\"."
+    }
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "welcome": "Bienvenue ! Voici ce qui se passe aujourd'hui.",
+    "viewAll": "Voir tout",
+    "stats": {
+      "totalPatients": "Total des patients",
+      "activePatients": "Patients actifs",
+      "todayAppointments": "Rendez-vous du jour",
+      "pendingInvoices": "Factures en attente",
+      "outstanding": "à régler",
+      "monthlyRevenue": "Revenus mensuels"
     },
-    "question": "Si vous avez des questions à propos de JHipster :",
-    "link": {
-      "homepage": "Page d'accueil de JHipster",
-      "stackoverflow": "JHipster sur Stack Overflow",
-      "bugtracker": "JHipster bug tracker",
-      "chat": "JHipster public chat room",
-      "follow": "Suivez @jhipster sur Twitter"
+    "todayAppointments": {
+      "title": "Rendez-vous du jour",
+      "empty": "Aucun rendez-vous aujourd'hui",
+      "emptyHint": "Planifiez de nouveaux rendez-vous pour les voir apparaître ici"
     },
-    "like": "Si vous aimez JHipster, donnez nous une étoile sur",
-    "github": "GitHub "
+    "quickActions": {
+      "title": "Actions rapides",
+      "newPatient": "Nouveau patient",
+      "newPatientHint": "Enregistrer un nouveau patient",
+      "scheduleAppointment": "Planifier un rendez-vous",
+      "scheduleAppointmentHint": "Réserver un créneau",
+      "newPrescription": "Nouvelle prescription",
+      "newPrescriptionHint": "Créer une prescription",
+      "createInvoice": "Créer une facture",
+      "createInvoiceHint": "Facturer un patient"
+    },
+    "recentPrescriptions": {
+      "title": "Prescriptions récentes",
+      "empty": "Aucune prescription récente",
+      "untitled": "Prescription"
+    }
   }
 }

@@ -9,4 +9,5 @@ public enum statusAppointement {
     INPROGRESS,
     COMPLETED,
     CANCELED,
+    NO_SHOW,
 }

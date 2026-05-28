@@ -6,7 +6,8 @@
       "CONFIRMED": "CONFIRMED",
       "INPROGRESS": "INPROGRESS",
       "COMPLETED": "COMPLETED",
-      "CANCELED": "CANCELED"
+      "CANCELED": "CANCELED",
+      "NO_SHOW": "NO_SHOW"
     }
   }
 }

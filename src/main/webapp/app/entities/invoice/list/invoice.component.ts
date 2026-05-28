@@ -2,13 +2,15 @@ import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { HttpResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { filter, tap } from 'rxjs';
 
 import SharedModule from 'app/shared/shared.module';
 
 import { IInvoice } from '../invoice.model';
 import { InvoiceService } from '../service/invoice.service';
 import { InvoiceStatus } from 'app/entities/enumerations/invoice-status.model';
+import { INVOICE_SAVED_EVENT, InvoiceUpdateComponent } from '../update/invoice-update.component';
 
 @Component({
   selector: 'jhi-invoice',
@@ -66,6 +68,7 @@ export class InvoiceComponent implements OnInit {
   public readonly router = inject(Router);
   protected readonly invoiceService = inject(InvoiceService);
   protected readonly activatedRoute = inject(ActivatedRoute);
+  protected readonly modalService = inject(NgbModal);
 
   trackId = (item: IInvoice): number => this.invoiceService.getInvoiceIdentifier(item);
 
@@ -97,7 +100,27 @@ export class InvoiceComponent implements OnInit {
   }
 
   openNewInvoice(): void {
-    this.router.navigate(['/invoice/new']);
+    const modalRef = this.modalService.open(InvoiceUpdateComponent, { size: 'lg', backdrop: 'static', scrollable: true });
+    modalRef.closed
+      .pipe(
+        filter(reason => reason === INVOICE_SAVED_EVENT),
+        tap(() => this.load()),
+      )
+      .subscribe();
+  }
+
+  openEditInvoice(invoice: IInvoice): void {
+    this.invoiceService.find(invoice.id).subscribe(res => {
+      const full = res.body ?? invoice;
+      const modalRef = this.modalService.open(InvoiceUpdateComponent, { size: 'lg', backdrop: 'static', scrollable: true });
+      modalRef.componentInstance.invoice = full;
+      modalRef.closed
+        .pipe(
+          filter(reason => reason === INVOICE_SAVED_EVENT),
+          tap(() => this.load()),
+        )
+        .subscribe();
+    });
   }
 
   protected load(): void {

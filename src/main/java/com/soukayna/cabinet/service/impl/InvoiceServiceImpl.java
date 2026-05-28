@@ -89,7 +89,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Transactional(readOnly = true)
     public Optional<Invoice> findOne(Long id) {
         LOG.debug("Request to get Invoice : {}", id);
-        return invoiceRepository.findById(id);
+        return invoiceRepository.findOneWithItemsById(id);
     }
 
     @Override

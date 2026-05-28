@@ -109,9 +109,7 @@
                     </svg>
                   </button>
                   <div ngbDropdownMenu class="dropdown-menu-card">
-                    <button type="button" ngbDropdownItem>View</button>
-                    <button type="button" ngbDropdownItem>Edit</button>
-                    <button type="button" ngbDropdownItem class="text-danger">Delete</button>
+                    <button type="button" ngbDropdownItem (click)="openEditInvoice(inv)">Edit</button>
                   </div>
                 </div>
               </td>

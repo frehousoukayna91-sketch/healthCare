@@ -33,6 +33,7 @@ const STATUS_OPTIONS: { value: 'ALL' | keyof typeof statusAppointement; label: s
   { value: 'INPROGRESS', label: 'En cours' },
   { value: 'COMPLETED', label: 'Terminé' },
   { value: 'CANCELED', label: 'Annulé' },
+  { value: 'NO_SHOW', label: 'Absent' },
 ];
 
 @Component({
@@ -146,6 +147,13 @@ export class AppointementComponent implements OnInit {
     });
   }
 
+  markAsNoShow(appointement: IAppointement): void {
+    if (appointement.status === 'NO_SHOW') return;
+    this.appointementService.partialUpdate({ id: appointement.id, status: 'NO_SHOW' }).subscribe({
+      next: () => this.load(),
+    });
+  }
+
   patientName(app: IAppointement): string {
     if (!app.patient) return `Patient #${app.patientId ?? '-'}`;
     const first = app.patient.firstName ?? '';
@@ -183,6 +191,8 @@ export class AppointementComponent implements OnInit {
         return 'terminé';
       case 'CANCELED':
         return 'annulé';
+      case 'NO_SHOW':
+        return 'absent';
       default:
         return '';
     }

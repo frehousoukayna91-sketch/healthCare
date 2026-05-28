@@ -425,6 +425,12 @@
 .status-completed {
   color: #4b5563;
   background: #f3f4f6;
+  .status-no_show {
+    color: #7c2d12;
+    background: #fff7ed;
+    border-color: #fed7aa;
+  }
+
   border-color: #d1d5db;
 }
 

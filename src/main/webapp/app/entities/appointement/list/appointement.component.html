@@ -155,7 +155,24 @@
                         <circle cx="12" cy="12" r="10"></circle>
                         <polyline points="9 12 11 14 15 10"></polyline>
                       </svg>
-                      Complete
+                      Marquer terminé
+                    </button>
+                    <button type="button" ngbDropdownItem (click)="markAsNoShow(appointment)" [disabled]="appointment.status === 'NO_SHOW'">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        width="15"
+                        height="15"
+                        class="me-2"
+                      >
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="15" y1="9" x2="9" y2="15"></line>
+                        <line x1="9" y1="9" x2="15" y2="15"></line>
+                      </svg>
+                      Marquer absent
                     </button>
                     <button type="button" ngbDropdownItem class="text-danger" (click)="delete(appointment)">
                       <svg

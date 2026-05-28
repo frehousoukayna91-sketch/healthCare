@@ -1,0 +1,177 @@
+<div class="form-page is-modal">
+  <div class="form-card">
+    <div class="form-card-header">
+      <h2 class="form-title">
+        @if (editForm.get('id')?.value !== null) {
+          Edit Invoice
+        } @else {
+          New Invoice
+        }
+      </h2>
+      <button type="button" class="modal-close-btn" (click)="previousState()" aria-label="Close">&times;</button>
+    </div>
+
+    <jhi-alert-error />
+
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <!-- Invoice number & status -->
+      <div class="form-grid">
+        <div class="field-group">
+          <label class="field-label" for="field_invoiceNumber">Invoice Number</label>
+          <input type="text" id="field_invoiceNumber" class="field-input" formControlName="invoiceNumber" placeholder="INV-…" />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="field_status">Status <span class="required-star">*</span></label>
+          <select id="field_status" class="field-input" formControlName="status">
+            @for (opt of statusOptions; track opt.value) {
+              <option [ngValue]="opt.value">{{ opt.label }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <!-- Patient -->
+      <div class="field-group field-group--full">
+        <label class="field-label" for="field_patientId">Patient <span class="required-star">*</span></label>
+        <select
+          id="field_patientId"
+          class="field-input"
+          formControlName="patientId"
+          (change)="onPatientChange(editForm.get('patientId')?.value)"
+          [class.is-invalid]="editForm.controls['patientId'].invalid && editForm.controls['patientId'].touched"
+        >
+          <option [ngValue]="null">Select patient</option>
+          @for (patient of patientsSharedCollection; track patient.id) {
+            <option [ngValue]="patient.id">{{ patientLabel(patient) }}</option>
+          }
+        </select>
+        @if (editForm.controls['patientId'].invalid && editForm.controls['patientId'].touched) {
+          <div class="field-error">Patient is required.</div>
+        }
+      </div>
+
+      <!-- Dates -->
+      <div class="form-grid">
+        <div class="field-group">
+          <label class="field-label" for="field_date">Date <span class="required-star">*</span></label>
+          <input
+            type="date"
+            id="field_date"
+            class="field-input"
+            formControlName="date"
+            [class.is-invalid]="editForm.controls['date'].invalid && editForm.controls['date'].touched"
+          />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="field_dueDate">Due Date</label>
+          <input type="date" id="field_dueDate" class="field-input" formControlName="dueDate" />
+        </div>
+      </div>
+
+      <!-- Items -->
+      <div class="items-section">
+        <div class="items-header">
+          <h3 class="items-title">Items</h3>
+          <button type="button" class="btn-add-item" (click)="addItem()"><span class="btn-icon">+</span> Add Item</button>
+        </div>
+
+        <div formArrayName="items">
+          @for (itemForm of items.controls; let i = $index; track i) {
+            <div class="item-card" [formGroupName]="i">
+              <div class="item-card-head">
+                <span class="item-card-title">Item #{{ i + 1 }}</span>
+                @if (items.length > 1) {
+                  <button type="button" class="item-remove-btn" (click)="removeItem(i)" title="Remove">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      width="16"
+                      height="16"
+                    >
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"></path>
+                    </svg>
+                  </button>
+                }
+              </div>
+
+              <div class="field-group field-group--full">
+                <label class="field-label">Description <span class="required-star">*</span></label>
+                <input type="text" class="field-input" formControlName="description" placeholder="e.g., Consultation" />
+              </div>
+
+              <div class="form-grid form-grid-3">
+                <div class="field-group">
+                  <label class="field-label">Quantity</label>
+                  <input type="number" class="field-input" formControlName="quantity" min="0" />
+                </div>
+
+                <div class="field-group">
+                  <label class="field-label">Unit Price</label>
+                  <input type="number" class="field-input" formControlName="unitPrice" min="0" step="0.01" />
+                </div>
+
+                <div class="field-group">
+                  <label class="field-label">Line Total</label>
+                  <div class="field-readonly">{{ itemTotal(itemForm) | currency: 'USD' : 'symbol' : '1.2-2' }}</div>
+                </div>
+              </div>
+            </div>
+          }
+          @if (items.length === 0) {
+            <div class="items-empty">No items added yet.</div>
+          }
+        </div>
+      </div>
+
+      <!-- Totals & payment -->
+      <div class="form-grid">
+        <div class="field-group">
+          <label class="field-label" for="field_paymentMethod">Payment Method</label>
+          <select id="field_paymentMethod" class="field-input" formControlName="paymentMethod">
+            @for (opt of paymentMethodOptions; track opt.value) {
+              <option [ngValue]="opt.value">{{ opt.label }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="field_tax">Tax (%)</label>
+          <input type="number" id="field_tax" class="field-input" formControlName="tax" min="0" step="0.01" />
+        </div>
+      </div>
+
+      <div class="totals-block">
+        <div class="totals-row">
+          <span>Subtotal</span>
+          <span>{{ subtotal() | currency: 'USD' : 'symbol' : '1.2-2' }}</span>
+        </div>
+        <div class="totals-row">
+          <span>Tax</span>
+          <span>{{ taxAmount() | currency: 'USD' : 'symbol' : '1.2-2' }}</span>
+        </div>
+        <div class="totals-row totals-row--final">
+          <span>Total</span>
+          <span>{{ totalAmount() | currency: 'USD' : 'symbol' : '1.2-2' }}</span>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="previousState()">Cancel</button>
+        <button type="submit" class="btn-save" [disabled]="isSaving">
+          @if (isSaving) {
+            Saving…
+          } @else {
+            Save Invoice
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
