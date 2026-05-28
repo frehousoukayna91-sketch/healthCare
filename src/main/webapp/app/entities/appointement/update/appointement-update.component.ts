@@ -3,6 +3,7 @@ import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -15,9 +16,12 @@ import { AppointementService } from '../service/appointement.service';
 import { IAppointement } from '../appointement.model';
 import { AppointementFormGroup, AppointementFormService } from './appointement-form.service';
 
+export const APPOINTEMENT_SAVED_EVENT = 'saved';
+
 @Component({
   selector: 'jhi-appointement-update',
   templateUrl: './appointement-update.component.html',
+  styleUrl: './appointement-update.component.scss',
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class AppointementUpdateComponent implements OnInit {
@@ -26,12 +30,16 @@ export class AppointementUpdateComponent implements OnInit {
   statusAppointementValues = Object.keys(statusAppointement);
   typeAppointementValues = Object.keys(typeAppointement);
 
+  durationOptions = [15, 30, 45, 60, 90, 120];
+  timeOptions: string[] = this.buildTimeOptions();
+
   patientsSharedCollection: IPatient[] = [];
 
   protected appointementService = inject(AppointementService);
   protected appointementFormService = inject(AppointementFormService);
   protected patientService = inject(PatientService);
   protected activatedRoute = inject(ActivatedRoute);
+  protected activeModal = inject(NgbActiveModal, { optional: true });
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: AppointementFormGroup = this.appointementFormService.createAppointementFormGroup();
@@ -39,10 +47,30 @@ export class AppointementUpdateComponent implements OnInit {
   comparePatient = (o1: IPatient | null, o2: IPatient | null): boolean => this.patientService.comparePatient(o1, o2);
 
   ngOnInit(): void {
+    if (this.activeModal) {
+      if (this.appointement) {
+        this.updateForm(this.appointement);
+      } else {
+        this.editForm.patchValue({
+          duration: 30,
+          status: 'SCHEDULED',
+          type: 'CONSULTATION',
+        });
+      }
+      this.loadRelationshipsOptions();
+      return;
+    }
+
     this.activatedRoute.data.subscribe(({ appointement }) => {
       this.appointement = appointement;
       if (appointement) {
         this.updateForm(appointement);
+      } else {
+        this.editForm.patchValue({
+          duration: 30,
+          status: 'SCHEDULED',
+          type: 'CONSULTATION',
+        });
       }
 
       this.loadRelationshipsOptions();
@@ -50,7 +78,11 @@ export class AppointementUpdateComponent implements OnInit {
   }
 
   previousState(): void {
-    window.history.back();
+    if (this.activeModal) {
+      this.activeModal.dismiss();
+    } else {
+      window.history.back();
+    }
   }
 
   save(): void {
@@ -63,6 +95,13 @@ export class AppointementUpdateComponent implements OnInit {
     }
   }
 
+  patientLabel(patient: IPatient): string {
+    const first = patient.firstName ?? '';
+    const last = patient.nom ?? patient.lastName ?? '';
+    const full = `${first} ${last}`.trim();
+    return full || `Patient #${patient.id}`;
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IAppointement>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
       next: () => this.onSaveSuccess(),
@@ -71,11 +110,15 @@ export class AppointementUpdateComponent implements OnInit {
   }
 
   protected onSaveSuccess(): void {
-    this.previousState();
+    if (this.activeModal) {
+      this.activeModal.close(APPOINTEMENT_SAVED_EVENT);
+    } else {
+      this.previousState();
+    }
   }
 
   protected onSaveError(): void {
-    // Api for inheritance.
+    this.isSaving = false;
   }
 
   protected onSaveFinalize(): void {
@@ -94,11 +137,20 @@ export class AppointementUpdateComponent implements OnInit {
 
   protected loadRelationshipsOptions(): void {
     this.patientService
-      .query()
+      .query({ size: 1000 })
       .pipe(map((res: HttpResponse<IPatient[]>) => res.body ?? []))
       .pipe(
         map((patients: IPatient[]) => this.patientService.addPatientToCollectionIfMissing<IPatient>(patients, this.appointement?.patient)),
       )
       .subscribe((patients: IPatient[]) => (this.patientsSharedCollection = patients));
+  }
+
+  private buildTimeOptions(): string[] {
+    const slots: string[] = [];
+    for (let h = 8; h <= 19; h++) {
+      slots.push(`${h.toString().padStart(2, '0')}:00`);
+      slots.push(`${h.toString().padStart(2, '0')}:30`);
+    }
+    return slots;
   }
 }

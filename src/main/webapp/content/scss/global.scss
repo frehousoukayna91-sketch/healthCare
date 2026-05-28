@@ -234,3 +234,33 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
   }
 }
 /* jhipster-needle-scss-add-main JHipster will add new css style */
+
+/* ── Prescription print rules ─────────────────────────────────────────────
+   When the print dialog triggers window.print(), hide everything except the
+   prescription sheet. Lives in global styles because Angular view
+   encapsulation would otherwise scope these rules to the component only. */
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  #prescriptionPrintArea,
+  #prescriptionPrintArea * {
+    visibility: visible !important;
+  }
+  #prescriptionPrintArea {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 1.5rem 2rem !important;
+    background: #fff !important;
+  }
+  .modal-backdrop {
+    display: none !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+}

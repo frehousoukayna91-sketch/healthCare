@@ -1,0 +1,326 @@
+.print-dialog {
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+// ── Modal header ──────────────────────────────────────────────────────────
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.modal-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.modal-head-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.btn-print {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 0.45rem 0.95rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+
+  &:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+  }
+}
+
+.btn-close-modal {
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+
+  &:hover {
+    color: #111827;
+    background: #f3f4f6;
+  }
+}
+
+// ── Printable sheet ───────────────────────────────────────────────────────
+.print-sheet {
+  padding: 1.5rem 2rem 2rem;
+  color: #111827;
+  font-size: 0.93rem;
+  max-height: 75vh;
+  overflow-y: auto;
+
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db transparent;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #d1d5db;
+    border-radius: 4px;
+  }
+}
+
+// Clinic header
+.clinic-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.clinic-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.clinic-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: #10b981;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clinic-name {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.2;
+}
+
+.clinic-tag {
+  font-size: 0.82rem;
+  color: #6b7280;
+  margin-top: 0.1rem;
+}
+
+.clinic-date {
+  text-align: right;
+}
+
+.date-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.date-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #111827;
+  margin-top: 0.1rem;
+}
+
+.sheet-divider {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 0.5rem 0 1rem;
+}
+
+// Rx
+.rx-symbol {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #10b981;
+  font-family: Georgia, 'Times New Roman', serif;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+// Patient block
+.patient-block {
+  background: #f5f6fa;
+  border-radius: 10px;
+  padding: 0.9rem 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.patient-block-label {
+  font-size: 0.78rem;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+
+.patient-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.patient-dob {
+  font-size: 0.85rem;
+  color: #4b5563;
+  margin-top: 0.2rem;
+}
+
+// Diagnosis
+.diagnosis-block {
+  background: #fffbeb;
+  border-left: 4px solid #f59e0b;
+  border-radius: 8px;
+  padding: 0.85rem 1.1rem;
+  margin-bottom: 1.25rem;
+}
+
+.diagnosis-head {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #b45309;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.diagnosis-text {
+  font-size: 0.95rem;
+  color: #111827;
+}
+
+// Medications
+.meds-section {
+  margin-bottom: 1.25rem;
+}
+
+.meds-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.65rem;
+}
+
+.med-card {
+  background: #ecfdf5;
+  border-left: 4px solid #10b981;
+  border-radius: 8px;
+  padding: 0.85rem 1.1rem;
+  margin-bottom: 0.7rem;
+}
+
+.med-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.4rem;
+}
+
+.med-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem 1.25rem;
+  margin-bottom: 0.35rem;
+}
+
+.med-cell,
+.med-instructions {
+  font-size: 0.88rem;
+  color: #111827;
+}
+
+.cell-label {
+  color: #6b7280;
+  margin-right: 0.3rem;
+}
+
+.cell-value {
+  color: #111827;
+}
+
+.med-instructions {
+  margin-top: 0.25rem;
+}
+
+// Notes
+.notes-block {
+  background: #f5f6fa;
+  border-radius: 10px;
+  padding: 0.85rem 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.notes-label {
+  font-size: 0.82rem;
+  color: #6b7280;
+  margin-bottom: 0.3rem;
+}
+
+.notes-text {
+  font-size: 0.92rem;
+  color: #111827;
+}
+
+// Follow-up
+.followup-block {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #eff6ff;
+  border-radius: 10px;
+  padding: 0.75rem 1.1rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.92rem;
+  color: #1e3a8a;
+}
+
+// Signature
+.signature-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 1px dashed #d1d5db;
+}
+
+.signature-block {
+  text-align: center;
+}
+
+.signature-line {
+  height: 1px;
+  background: #111827;
+  margin-bottom: 0.4rem;
+}
+
+.signature-label {
+  font-size: 0.85rem;
+  color: #4b5563;
+}
+
+// Print rules live in src/main/webapp/content/scss/global.scss (must be
+// unencapsulated to hide elements outside this component during printing).

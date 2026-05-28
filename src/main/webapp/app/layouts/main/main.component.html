@@ -1,13 +1,49 @@
-<jhi-page-ribbon />
-
-<div>
-  <router-outlet name="navbar" />
-</div>
-
-<div class="container-fluid">
-  <div class="card jh-card">
-    <router-outlet />
+<div class="layout-wrapper">
+  <div class="layout-topbar">
+    <button pButton type="button" icon="pi pi-bars" class="p-button-text" (click)="toggleSidebar()"></button>
+    <a routerLink="/" class="layout-topbar-logo">
+      <i class="pi pi-heart-fill"></i>
+      <span>HealthCare</span>
+    </a>
+    <a routerLink="/login" routerLinkActive="active" class="layout-topbar-login">
+      <i class="pi pi-sign-in"></i>
+      <span>Connexion</span>
+    </a>
   </div>
 
-  <jhi-footer />
+  <p-sidebar [(visible)]="sidebarVisible" [modal]="false" [showCloseIcon]="false" styleClass="sakai-sidebar">
+    <div class="sakai-sidebar-content">
+      <div class="sakai-sidebar-title">Menu</div>
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="sakai-link">
+        <i class="pi pi-home"></i>
+        <span>Accueil</span>
+      </a>
+      <a routerLink="/patient" routerLinkActive="active" class="sakai-link">
+        <i class="pi pi-users"></i>
+        <span>Patients</span>
+      </a>
+      <a routerLink="/appointement" routerLinkActive="active" class="sakai-link">
+        <i class="pi pi-calendar"></i>
+        <span>Rendez-vous</span>
+      </a>
+      <a routerLink="/prescription" routerLinkActive="active" class="sakai-link">
+        <i class="pi pi-file-edit"></i>
+        <span>Prescriptions</span>
+      </a>
+      <a routerLink="/invoice" routerLinkActive="active" class="sakai-link">
+        <i class="pi pi-receipt"></i>
+        <span>Factures</span>
+      </a>
+    </div>
+  </p-sidebar>
+
+  <div class="layout-main-container">
+    <div class="layout-main">
+      <div class="card jh-card">
+        <router-outlet />
+      </div>
+    </div>
+
+    <jhi-footer />
+  </div>
 </div>

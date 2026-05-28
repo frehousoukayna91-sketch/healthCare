@@ -8,6 +8,7 @@ import { IPatient } from '../patient.model';
 @Component({
   selector: 'jhi-patient-detail',
   templateUrl: './patient-detail.component.html',
+  styleUrl: './patient-detail.component.scss',
   imports: [SharedModule, RouterModule, FormatMediumDatePipe],
 })
 export class PatientDetailComponent {

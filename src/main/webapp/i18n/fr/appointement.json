@@ -19,9 +19,13 @@
       },
       "id": "ID",
       "patientId": "Patient Id",
-      "duration": "Duration",
-      "status": "Status",
+      "duration": "Durée (min)",
+      "status": "Statut",
       "type": "Type",
+      "appointementDate": "Date",
+      "appointementTime": "Heure",
+      "reasonAppointement": "Motif",
+      "notes": "Notes",
       "patient": "Patient"
     }
   }

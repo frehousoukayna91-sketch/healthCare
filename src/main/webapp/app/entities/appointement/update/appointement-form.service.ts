@@ -22,6 +22,10 @@ type AppointementFormGroupContent = {
   duration: FormControl<IAppointement['duration']>;
   status: FormControl<IAppointement['status']>;
   type: FormControl<IAppointement['type']>;
+  appointementDate: FormControl<IAppointement['appointementDate']>;
+  appointementTime: FormControl<IAppointement['appointementTime']>;
+  reasonAppointement: FormControl<IAppointement['reasonAppointement']>;
+  notes: FormControl<IAppointement['notes']>;
   patient: FormControl<IAppointement['patient']>;
 };
 
@@ -46,6 +50,10 @@ export class AppointementFormService {
       duration: new FormControl(appointementRawValue.duration),
       status: new FormControl(appointementRawValue.status),
       type: new FormControl(appointementRawValue.type),
+      appointementDate: new FormControl(appointementRawValue.appointementDate),
+      appointementTime: new FormControl(appointementRawValue.appointementTime),
+      reasonAppointement: new FormControl(appointementRawValue.reasonAppointement),
+      notes: new FormControl(appointementRawValue.notes),
       patient: new FormControl(appointementRawValue.patient),
     });
   }

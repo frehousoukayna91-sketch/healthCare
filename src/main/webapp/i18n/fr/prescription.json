@@ -1,0 +1,29 @@
+{
+  "healthCareApp": {
+    "prescription": {
+      "home": {
+        "title": "Prescriptions",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer une nouvelle Prescription",
+        "createOrEditLabel": "Créer ou éditer une Prescription",
+        "notFound": "Aucune Prescription trouvée"
+      },
+      "created": "Une nouvelle Prescription a été créée avec l'identifiant {{ param }}",
+      "updated": "La Prescription avec l'identifiant {{ param }} a été mise à jour",
+      "deleted": "La Prescription avec l'identifiant {{ param }} a été supprimée",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer la Prescription {{ id }} ?"
+      },
+      "detail": {
+        "title": "Prescription"
+      },
+      "id": "ID",
+      "patientId": "Patient",
+      "prescriptionDate": "Date de prescription",
+      "followupDate": "Date de suivi",
+      "diagnosis": "Diagnostic",
+      "notes": "Notes",
+      "medications": "Médicaments"
+    }
+  }
+}

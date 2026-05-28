@@ -1,18 +1,20 @@
 import { Component, OnInit, Renderer2, RendererFactory2, inject } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import dayjs from 'dayjs/esm';
+import { ButtonModule } from 'primeng/button';
+import { SidebarModule } from 'primeng/sidebar';
 
 import { AccountService } from 'app/core/auth/account.service';
 import { AppPageTitleStrategy } from 'app/app-page-title-strategy';
 import FooterComponent from '../footer/footer.component';
-import PageRibbonComponent from '../profiles/page-ribbon.component';
 
 @Component({
   selector: 'jhi-main',
   templateUrl: './main.component.html',
+  styleUrl: './main.component.scss',
   providers: [AppPageTitleStrategy],
-  imports: [RouterOutlet, FooterComponent, PageRibbonComponent],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, FooterComponent, ButtonModule, SidebarModule],
 })
 export default class MainComponent implements OnInit {
   private readonly renderer: Renderer2;
@@ -22,6 +24,8 @@ export default class MainComponent implements OnInit {
   private readonly accountService = inject(AccountService);
   private readonly translateService = inject(TranslateService);
   private readonly rootRenderer = inject(RendererFactory2);
+
+  sidebarVisible = true;
 
   constructor() {
     this.renderer = this.rootRenderer.createRenderer(document.querySelector('html'), null);
@@ -36,5 +40,9 @@ export default class MainComponent implements OnInit {
       dayjs.locale(langChangeEvent.lang);
       this.renderer.setAttribute(document.querySelector('html'), 'lang', langChangeEvent.lang);
     });
+  }
+
+  toggleSidebar(): void {
+    this.sidebarVisible = !this.sidebarVisible;
   }
 }

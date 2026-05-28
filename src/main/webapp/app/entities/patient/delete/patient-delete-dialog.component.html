@@ -6,8 +6,12 @@
 
     <div class="modal-body">
       <jhi-alert-error />
-      <p id="jhi-delete-patient-heading" jhiTranslate="healthCareApp.patient.delete.question" [translateValues]="{ id: patient.id }">
-        Êtes-vous certain de vouloir supprimer le Patient {{ patient.id }} ?
+      <p
+        id="jhi-delete-patient-heading"
+        jhiTranslate="healthCareApp.patient.delete.question"
+        [translateValues]="{ nom: patient.nom ?? patient.lastName ?? '', prenom: patient.firstName ?? '' }"
+      >
+        Êtes-vous certain de vouloir supprimer le Patient {{ patient.nom ?? patient.lastName }} {{ patient.firstName }} ?
       </p>
     </div>
 

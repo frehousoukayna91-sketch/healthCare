@@ -1,0 +1,174 @@
+<div class="prescriptions-page">
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Prescriptions</h1>
+      <p class="page-subtitle">Manage patient prescriptions</p>
+    </div>
+    <button type="button" class="btn-add" (click)="openNewPrescriptionDialog()"><span class="btn-icon">+</span> New Prescription</button>
+  </div>
+
+  <jhi-alert-error />
+  <jhi-alert />
+
+  <!-- Search -->
+  <div class="search-bar">
+    <span class="search-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </span>
+    <input
+      type="text"
+      class="search-input"
+      placeholder="Search prescriptions..."
+      [ngModel]="searchTerm()"
+      (ngModelChange)="searchTerm.set($event)"
+    />
+  </div>
+
+  <!-- Cards grid -->
+  @if (filteredPrescriptions().length > 0) {
+    <div class="cards-grid">
+      @for (p of filteredPrescriptions(); track trackId(p)) {
+        <div class="prescription-card">
+          <div class="card-head">
+            <div class="card-head-left">
+              <div class="card-avatar">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  width="22"
+                  height="22"
+                >
+                  <path d="M10.5 20.5l10-10a4.95 4.95 0 0 0-7-7l-10 10a4.95 4.95 0 0 0 7 7z"></path>
+                  <line x1="8.5" y1="8.5" x2="15.5" y2="15.5"></line>
+                </svg>
+              </div>
+              <div class="card-head-text">
+                <div class="patient-name">{{ patientName(p) }}</div>
+                <div class="prescription-date">
+                  @if (p.prescriptionDate) {
+                    {{ p.prescriptionDate.format('MMM D, YYYY') }}
+                  } @else {
+                    --
+                  }
+                </div>
+              </div>
+            </div>
+            <div ngbDropdown placement="bottom-end" class="card-menu" container="body">
+              <button type="button" class="menu-btn" ngbDropdownToggle title="Actions" (click)="$event.stopPropagation()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                  <circle cx="12" cy="5" r="1.5" />
+                  <circle cx="12" cy="12" r="1.5" />
+                  <circle cx="12" cy="19" r="1.5" />
+                </svg>
+              </button>
+              <div ngbDropdownMenu class="dropdown-menu-card">
+                <button type="button" ngbDropdownItem (click)="openEditDialog(p)">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    width="15"
+                    height="15"
+                    class="me-2"
+                  >
+                    <path d="M12 20h9"></path>
+                    <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                  </svg>
+                  Edit
+                </button>
+                <button type="button" ngbDropdownItem class="text-danger" (click)="delete(p)">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    width="15"
+                    height="15"
+                    class="me-2"
+                  >
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"></path>
+                    <path d="M10 11v6"></path>
+                    <path d="M14 11v6"></path>
+                  </svg>
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="diagnosis-block">
+            <div class="diagnosis-label">Diagnosis</div>
+            <div class="diagnosis-text">{{ p.diagnosis || '—' }}</div>
+          </div>
+
+          <div class="meds-block">
+            <div class="meds-label">Medications ({{ itemCount(p) }})</div>
+            @if (itemCount(p) > 0) {
+              <ul class="meds-list">
+                @for (item of p.prescriptionItems; track item.id) {
+                  <li class="med-item">
+                    <span class="med-bullet"></span>
+                    <span>{{ itemSummary(item) }}</span>
+                  </li>
+                }
+              </ul>
+            } @else {
+              <div class="meds-empty">No medications</div>
+            }
+          </div>
+
+          <div class="card-actions">
+            <button type="button" class="action-btn" (click)="openPrintDialog(p)">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                width="16"
+                height="16"
+              >
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              View
+            </button>
+            <button type="button" class="action-btn" (click)="openPrintDialog(p, true)">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                width="16"
+                height="16"
+              >
+                <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                <rect x="6" y="14" width="12" height="8"></rect>
+              </svg>
+              Print
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  } @else if (!isLoading) {
+    <div class="empty-state">No prescriptions found.</div>
+  }
+
+  @if (isLoading && prescriptions().length === 0) {
+    <div class="empty-state">Loading prescriptions...</div>
+  }
+</div>

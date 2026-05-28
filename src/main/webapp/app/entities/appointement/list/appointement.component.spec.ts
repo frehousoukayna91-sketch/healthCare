@@ -8,13 +8,11 @@ import { sampleWithRequiredData } from '../appointement.test-samples';
 import { AppointementService } from '../service/appointement.service';
 
 import { AppointementComponent } from './appointement.component';
-import SpyInstance = jest.SpyInstance;
 
 describe('Appointement Management Component', () => {
   let comp: AppointementComponent;
   let fixture: ComponentFixture<AppointementComponent>;
   let service: AppointementService;
-  let routerNavigateSpy: SpyInstance<Promise<boolean>>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -24,26 +22,9 @@ describe('Appointement Management Component', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            data: of({
-              defaultSort: 'id,asc',
-            }),
-            queryParamMap: of(
-              jest.requireActual('@angular/router').convertToParamMap({
-                page: '1',
-                size: '1',
-                sort: 'id,desc',
-                'filter[someId.in]': 'dc4279ea-cfb9-11ec-9d64-0242ac120002',
-              }),
-            ),
-            snapshot: {
-              queryParams: {},
-              queryParamMap: jest.requireActual('@angular/router').convertToParamMap({
-                page: '1',
-                size: '1',
-                sort: 'id,desc',
-                'filter[someId.in]': 'dc4279ea-cfb9-11ec-9d64-0242ac120002',
-              }),
-            },
+            data: of({}),
+            queryParamMap: of(jest.requireActual('@angular/router').convertToParamMap({})),
+            snapshot: { queryParams: {}, queryParamMap: jest.requireActual('@angular/router').convertToParamMap({}) },
           },
         },
       ],
@@ -54,37 +35,19 @@ describe('Appointement Management Component', () => {
     fixture = TestBed.createComponent(AppointementComponent);
     comp = fixture.componentInstance;
     service = TestBed.inject(AppointementService);
-    routerNavigateSpy = jest.spyOn(comp.router, 'navigate');
 
-    jest
-      .spyOn(service, 'query')
-      .mockReturnValueOnce(
-        of(
-          new HttpResponse({
-            body: [{ id: 8117 }],
-            headers: new HttpHeaders({
-              link: '<http://localhost/api/foo?page=1&size=20>; rel="next"',
-            }),
-          }),
-        ),
-      )
-      .mockReturnValueOnce(
-        of(
-          new HttpResponse({
-            body: [{ id: 25002 }],
-            headers: new HttpHeaders({
-              link: '<http://localhost/api/foo?page=0&size=20>; rel="prev",<http://localhost/api/foo?page=2&size=20>; rel="next"',
-            }),
-          }),
-        ),
-      );
+    jest.spyOn(service, 'query').mockReturnValue(
+      of(
+        new HttpResponse({
+          body: [{ id: 8117 }],
+          headers: new HttpHeaders(),
+        }),
+      ),
+    );
   });
 
   it('should call load all on init', () => {
-    // WHEN
     comp.ngOnInit();
-
-    // THEN
     expect(service.query).toHaveBeenCalled();
     expect(comp.appointements()[0]).toEqual(expect.objectContaining({ id: 8117 }));
   });
@@ -99,43 +62,25 @@ describe('Appointement Management Component', () => {
     });
   });
 
-  it('should calculate the sort attribute for a non-id attribute', () => {
-    // WHEN
-    comp.navigateToWithComponentValues({ predicate: 'non-existing-column', order: 'asc' });
+  describe('week navigation', () => {
+    it('previousWeek should subtract 7 days', () => {
+      const before = comp.weekStart();
+      comp.previousWeek();
+      expect(comp.weekStart().diff(before, 'day')).toBe(-7);
+    });
 
-    // THEN
-    expect(routerNavigateSpy).toHaveBeenLastCalledWith(
-      expect.anything(),
-      expect.objectContaining({
-        queryParams: expect.objectContaining({
-          sort: ['non-existing-column,asc'],
-        }),
-      }),
-    );
+    it('nextWeek should add 7 days', () => {
+      const before = comp.weekStart();
+      comp.nextWeek();
+      expect(comp.weekStart().diff(before, 'day')).toBe(7);
+    });
   });
 
-  it('should load a page', () => {
-    // WHEN
-    comp.navigateToPage(1);
-
-    // THEN
-    expect(routerNavigateSpy).toHaveBeenCalled();
-  });
-
-  it('should calculate the sort attribute for an id', () => {
-    // WHEN
-    comp.ngOnInit();
-
-    // THEN
-    expect(service.query).toHaveBeenLastCalledWith(expect.objectContaining({ sort: ['id,desc'] }));
-  });
-
-  it('should calculate the filter attribute', () => {
-    // WHEN
-    comp.ngOnInit();
-
-    // THEN
-    expect(service.query).toHaveBeenLastCalledWith(expect.objectContaining({ 'someId.in': ['dc4279ea-cfb9-11ec-9d64-0242ac120002'] }));
+  describe('selectStatus', () => {
+    it('should update selected status', () => {
+      comp.selectStatus('CONFIRMED');
+      expect(comp.selectedStatus()).toBe('CONFIRMED');
+    });
   });
 
   describe('delete', () => {
@@ -144,8 +89,6 @@ describe('Appointement Management Component', () => {
 
     beforeEach(() => {
       deleteModalMock = { componentInstance: {}, closed: new Subject() };
-      // NgbModal is not a singleton using TestBed.inject.
-      // ngbModal = TestBed.inject(NgbModal);
       ngbModal = (comp as any).modalService;
       jest.spyOn(ngbModal, 'open').mockReturnValue(deleteModalMock);
     });
@@ -153,15 +96,10 @@ describe('Appointement Management Component', () => {
     it('on confirm should call load', inject(
       [],
       fakeAsync(() => {
-        // GIVEN
         jest.spyOn(comp, 'load');
-
-        // WHEN
         comp.delete(sampleWithRequiredData);
         deleteModalMock.closed.next('deleted');
         tick();
-
-        // THEN
         expect(ngbModal.open).toHaveBeenCalled();
         expect(comp.load).toHaveBeenCalled();
       }),
@@ -170,15 +108,10 @@ describe('Appointement Management Component', () => {
     it('on dismiss should call load', inject(
       [],
       fakeAsync(() => {
-        // GIVEN
         jest.spyOn(comp, 'load');
-
-        // WHEN
         comp.delete(sampleWithRequiredData);
         deleteModalMock.closed.next();
         tick();
-
-        // THEN
         expect(ngbModal.open).toHaveBeenCalled();
         expect(comp.load).not.toHaveBeenCalled();
       }),

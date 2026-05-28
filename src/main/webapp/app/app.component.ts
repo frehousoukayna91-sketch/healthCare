@@ -3,6 +3,13 @@ import { registerLocaleData } from '@angular/common';
 import dayjs from 'dayjs/esm';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
+import { ButtonModule } from 'primeng/button';
+import { TableModule } from 'primeng/table';
+import { InputTextModule } from 'primeng/inputtext';
+import { CardModule } from 'primeng/card';
+import { ToolbarModule } from 'primeng/toolbar';
+import { SidebarModule } from 'primeng/sidebar';
+import { MenubarModule } from 'primeng/menubar';
 import locale from '@angular/common/locales/fr';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 
@@ -15,6 +22,13 @@ import MainComponent from './layouts/main/main.component';
   template: '<jhi-main />',
   imports: [
     MainComponent,
+    ButtonModule,
+    TableModule,
+    InputTextModule,
+    CardModule,
+    ToolbarModule,
+    SidebarModule,
+    MenubarModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
   ],
 })

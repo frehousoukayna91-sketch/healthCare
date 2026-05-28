@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 
-import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 import { ASC } from 'app/config/navigation.constants';
 import AppointementResolve from './route/appointement-routing-resolve.service';
 
@@ -11,7 +10,6 @@ const appointementRoute: Routes = [
     data: {
       defaultSort: `id,${ASC}`,
     },
-    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/view',
@@ -19,7 +17,6 @@ const appointementRoute: Routes = [
     resolve: {
       appointement: AppointementResolve,
     },
-    canActivate: [UserRouteAccessService],
   },
   {
     path: 'new',
@@ -27,7 +24,6 @@ const appointementRoute: Routes = [
     resolve: {
       appointement: AppointementResolve,
     },
-    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/edit',
@@ -35,7 +31,6 @@ const appointementRoute: Routes = [
     resolve: {
       appointement: AppointementResolve,
     },
-    canActivate: [UserRouteAccessService],
   },
 ];
 

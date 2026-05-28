@@ -1,0 +1,92 @@
+.layout-wrapper {
+  min-height: 100vh;
+  background: var(--surface-ground);
+}
+
+.layout-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 1001;
+  height: 4rem;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--surface-card);
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.layout-topbar-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-color);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.layout-topbar-login {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-color);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+}
+
+.layout-topbar-login:hover,
+.layout-topbar-login.active {
+  background: var(--surface-hover);
+}
+
+.layout-main-container {
+  padding: 1rem;
+}
+
+.layout-main {
+  min-height: calc(100vh - 8rem);
+}
+
+:host ::ng-deep .sakai-sidebar {
+  width: 20rem;
+}
+
+.sakai-sidebar-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+}
+
+.sakai-sidebar-title {
+  font-weight: 700;
+  color: var(--text-color-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.sakai-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--text-color);
+  transition: background-color 0.2s ease;
+}
+
+.sakai-link:hover {
+  background: var(--surface-hover);
+}
+
+.sakai-link.active {
+  background: var(--primary-100);
+  color: var(--primary-700);
+}
+
+.layout-main .jh-card {
+  margin-top: 0;
+}

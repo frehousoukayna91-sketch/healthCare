@@ -1,86 +1,115 @@
-<div class="d-flex justify-content-center">
-  <div class="col-8">
-    @if (patient(); as patientRef) {
-      <div>
-        <h2 data-cy="patientDetailsHeading"><span jhiTranslate="healthCareApp.patient.detail.title">Patient</span></h2>
+<div class="form-page">
+  @if (patient(); as patientRef) {
+    <div class="form-card">
+      <!-- Header -->
+      <div class="form-card-header">
+        <div>
+          <h2 class="form-title" data-cy="patientDetailsHeading">Patient Details</h2>
+          <p class="form-subtitle">Read-only view of the patient's information</p>
+        </div>
+      </div>
 
-        <hr />
+      <jhi-alert-error />
+      <jhi-alert />
 
-        <jhi-alert-error />
+      <!-- Section: Personal Info -->
+      <div class="form-section">
+        <h3 class="section-title">Personal Information</h3>
+        <div class="form-grid">
+          <div class="field-group">
+            <label class="field-label">First Name</label>
+            <div class="field-value">{{ patientRef.firstName || '—' }}</div>
+          </div>
 
-        <jhi-alert />
+          <div class="field-group">
+            <label class="field-label">Last Name</label>
+            <div class="field-value">{{ patientRef.nom || patientRef.lastName || '—' }}</div>
+          </div>
 
-        <dl class="row-md jh-entity-details">
-          <dt><span jhiTranslate="global.field.id">ID</span></dt>
-          <dd>
-            <span>{{ patientRef.id }}</span>
-          </dd>
-          <dt><span jhiTranslate="healthCareApp.patient.nom">Nom</span></dt>
-          <dd>
-            <span>{{ patientRef.nom }}</span>
-          </dd>
-          <dt><span jhiTranslate="healthCareApp.patient.lastName">Last Name</span></dt>
-          <dd>
-            <span>{{ patientRef.lastName }}</span>
-          </dd>
-          <dt><span jhiTranslate="healthCareApp.patient.firstName">First Name</span></dt>
-          <dd>
-            <span>{{ patientRef.firstName }}</span>
-          </dd>
-          <dt><span jhiTranslate="healthCareApp.patient.dateBirth">Date Birth</span></dt>
-          <dd>
-            <span>{{ patientRef.dateBirth | formatMediumDate }}</span>
-          </dd>
-          <dt><span jhiTranslate="healthCareApp.patient.phone">Phone</span></dt>
-          <dd>
-            <span>{{ patientRef.phone }}</span>
-          </dd>
-          <dt><span jhiTranslate="healthCareApp.patient.email">Email</span></dt>
-          <dd>
-            <span>{{ patientRef.email }}</span>
-          </dd>
-          <dt><span jhiTranslate="healthCareApp.patient.address">Address</span></dt>
-          <dd>
-            <span>{{ patientRef.address }}</span>
-          </dd>
-          <dt><span jhiTranslate="healthCareApp.patient.bloodType">Blood Type</span></dt>
-          <dd>
-            <span>{{ patientRef.bloodType }}</span>
-          </dd>
-          <dt><span jhiTranslate="healthCareApp.patient.allergies">Allergies</span></dt>
-          <dd>
-            <span>{{ patientRef.allergies }}</span>
-          </dd>
-          <dt><span jhiTranslate="healthCareApp.patient.notes">Notes</span></dt>
-          <dd>
-            <span>{{ patientRef.notes }}</span>
-          </dd>
-          <dt><span jhiTranslate="healthCareApp.patient.emergencyContactName">Emergency Contact Name</span></dt>
-          <dd>
-            <span>{{ patientRef.emergencyContactName }}</span>
-          </dd>
-          <dt><span jhiTranslate="healthCareApp.patient.emeregencyContactPhone">Emeregency Contact Phone</span></dt>
-          <dd>
-            <span>{{ patientRef.emeregencyContactPhone }}</span>
-          </dd>
-          <dt><span jhiTranslate="healthCareApp.patient.chronicdiseases">Chronicdiseases</span></dt>
-          <dd>
-            <span>{{ patientRef.chronicdiseases }}</span>
-          </dd>
-          <dt><span jhiTranslate="healthCareApp.patient.medicalHistory">Medical History</span></dt>
-          <dd>
-            <span>{{ patientRef.medicalHistory }}</span>
-          </dd>
-        </dl>
+          <div class="field-group">
+            <label class="field-label">Date of Birth</label>
+            <div class="field-value">{{ (patientRef.dateBirth | formatMediumDate) || '—' }}</div>
+          </div>
 
-        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+          <div class="field-group">
+            <label class="field-label">Blood Type</label>
+            <div class="field-value">{{ patientRef.bloodType || '—' }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Contact -->
+      <div class="form-section">
+        <h3 class="section-title">Contact</h3>
+        <div class="form-grid">
+          <div class="field-group">
+            <label class="field-label">Phone</label>
+            <div class="field-value">{{ patientRef.phone || '—' }}</div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Email</label>
+            <div class="field-value">{{ patientRef.email || '—' }}</div>
+          </div>
+
+          <div class="field-group field-group--full">
+            <label class="field-label">Address</label>
+            <div class="field-value">{{ patientRef.address || '—' }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Medical Info -->
+      <div class="form-section">
+        <h3 class="section-title">Medical Information</h3>
+        <div class="form-grid">
+          <div class="field-group field-group--full">
+            <label class="field-label">Allergies</label>
+            <div class="field-value">{{ patientRef.allergies || '—' }}</div>
+          </div>
+
+          <div class="field-group field-group--full">
+            <label class="field-label">Chronic Diseases</label>
+            <div class="field-value">{{ patientRef.chronicdiseases || '—' }}</div>
+          </div>
+
+          <div class="field-group field-group--full">
+            <label class="field-label">Medical History</label>
+            <div class="field-value field-value--multiline">{{ patientRef.medicalHistory || '—' }}</div>
+          </div>
+
+          <div class="field-group field-group--full">
+            <label class="field-label">Notes</label>
+            <div class="field-value field-value--multiline">{{ patientRef.notes || '—' }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Emergency Contact -->
+      <div class="form-section">
+        <h3 class="section-title">Emergency Contact</h3>
+        <div class="form-grid">
+          <div class="field-group">
+            <label class="field-label">Contact Name</label>
+            <div class="field-value">{{ patientRef.emergencyContactName || '—' }}</div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Contact Phone</label>
+            <div class="field-value">{{ patientRef.emeregencyContactPhone || '—' }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="previousState()" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp; Back
         </button>
-
-        <button type="button" [routerLink]="['/patient', patientRef.id, 'edit']" class="btn btn-primary">
-          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+        <button type="button" class="btn-save" [routerLink]="['/patient', patientRef.id, 'edit']">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp; Edit
         </button>
       </div>
-    }
-  </div>
+    </div>
+  }
 </div>

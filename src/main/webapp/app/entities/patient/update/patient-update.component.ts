@@ -3,6 +3,7 @@ import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -11,9 +12,12 @@ import { IPatient } from '../patient.model';
 import { PatientService } from '../service/patient.service';
 import { PatientFormGroup, PatientFormService } from './patient-form.service';
 
+export const PATIENT_SAVED_EVENT = 'saved';
+
 @Component({
   selector: 'jhi-patient-update',
   templateUrl: './patient-update.component.html',
+  styleUrl: './patient-update.component.scss',
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class PatientUpdateComponent implements OnInit {
@@ -23,6 +27,7 @@ export class PatientUpdateComponent implements OnInit {
   protected patientService = inject(PatientService);
   protected patientFormService = inject(PatientFormService);
   protected activatedRoute = inject(ActivatedRoute);
+  protected activeModal = inject(NgbActiveModal, { optional: true });
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: PatientFormGroup = this.patientFormService.createPatientFormGroup();
@@ -37,10 +42,18 @@ export class PatientUpdateComponent implements OnInit {
   }
 
   previousState(): void {
-    window.history.back();
+    if (this.activeModal) {
+      this.activeModal.dismiss();
+    } else {
+      window.history.back();
+    }
   }
 
   save(): void {
+    this.editForm.markAllAsTouched();
+    if (this.editForm.invalid) {
+      return;
+    }
     this.isSaving = true;
     const patient = this.patientFormService.getPatient(this.editForm);
     if (patient.id !== null) {
@@ -58,11 +71,15 @@ export class PatientUpdateComponent implements OnInit {
   }
 
   protected onSaveSuccess(): void {
-    this.previousState();
+    if (this.activeModal) {
+      this.activeModal.close(PATIENT_SAVED_EVENT);
+    } else {
+      this.previousState();
+    }
   }
 
   protected onSaveError(): void {
-    // Api for inheritance.
+    this.isSaving = false;
   }
 
   protected onSaveFinalize(): void {

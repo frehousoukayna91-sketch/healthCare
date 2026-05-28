@@ -1,85 +1,146 @@
-<div class="d-flex justify-content-center">
-  <div class="col-8">
-    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2
-        id="jhi-appointement-heading"
-        data-cy="AppointementCreateUpdateHeading"
-        jhiTranslate="healthCareApp.appointement.home.createOrEditLabel"
-      >
-        Créer ou éditer un Appointement
-      </h2>
-
-      <div>
-        <jhi-alert-error />
-
+<div class="form-page" [class.is-modal]="activeModal">
+  <div class="form-card">
+    <!-- Header -->
+    <div class="form-card-header">
+      <h2 class="form-title">
         @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
-            <label class="form-label" for="field_id" jhiTranslate="healthCareApp.appointement.id">ID</label>
-            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-          </div>
+          Edit Appointment
+        } @else {
+          New Appointment
         }
+      </h2>
+      @if (activeModal) {
+        <button type="button" class="modal-close-btn" (click)="previousState()" aria-label="Close">&times;</button>
+      }
+    </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_patientId" jhiTranslate="healthCareApp.appointement.patientId">Patient Id</label>
-          <input type="number" class="form-control" name="patientId" id="field_patientId" data-cy="patientId" formControlName="patientId" />
+    <jhi-alert-error />
+
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <!-- Patient (full row) -->
+      <div class="field-group field-group--full">
+        <label class="field-label" for="field_patient">Patient <span class="required-star">*</span></label>
+        <select
+          id="field_patient"
+          class="field-input"
+          formControlName="patient"
+          [compareWith]="comparePatient"
+          [class.is-invalid]="editForm.controls.patient.invalid && editForm.controls.patient.touched"
+        >
+          <option [ngValue]="null">Select patient</option>
+          @for (patientOption of patientsSharedCollection; track patientOption.id) {
+            <option [ngValue]="patientOption">{{ patientLabel(patientOption) }}</option>
+          }
+        </select>
+        @if (editForm.controls.patient.invalid && editForm.controls.patient.touched) {
+          <div class="field-error">Patient is required.</div>
+        }
+      </div>
+
+      <!-- Date / Time -->
+      <div class="form-grid">
+        <div class="field-group">
+          <label class="field-label" for="field_appointementDate">Date <span class="required-star">*</span></label>
+          <input
+            type="date"
+            id="field_appointementDate"
+            class="field-input"
+            formControlName="appointementDate"
+            [class.is-invalid]="editForm.controls.appointementDate.invalid && editForm.controls.appointementDate.touched"
+          />
+          @if (editForm.controls.appointementDate.invalid && editForm.controls.appointementDate.touched) {
+            <div class="field-error">Date is required.</div>
+          }
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_duration" jhiTranslate="healthCareApp.appointement.duration">Duration</label>
-          <input type="number" class="form-control" name="duration" id="field_duration" data-cy="duration" formControlName="duration" />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_status" jhiTranslate="healthCareApp.appointement.status">Status</label>
-          <select class="form-control" name="status" formControlName="status" id="field_status" data-cy="status">
-            <option [ngValue]="null">{{ 'healthCareApp.statusAppointement.null' | translate }}</option>
-            @for (statusAppointement of statusAppointementValues; track $index) {
-              <option [value]="statusAppointement">{{ 'healthCareApp.statusAppointement.' + statusAppointement | translate }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_type" jhiTranslate="healthCareApp.appointement.type">Type</label>
-          <select class="form-control" name="type" formControlName="type" id="field_type" data-cy="type">
-            <option [ngValue]="null">{{ 'healthCareApp.typeAppointement.null' | translate }}</option>
-            @for (typeAppointement of typeAppointementValues; track $index) {
-              <option [value]="typeAppointement">{{ 'healthCareApp.typeAppointement.' + typeAppointement | translate }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_patient" jhiTranslate="healthCareApp.appointement.patient">Patient</label>
+        <div class="field-group">
+          <label class="field-label" for="field_appointementTime">Time <span class="required-star">*</span></label>
           <select
-            class="form-control"
-            id="field_patient"
-            data-cy="patient"
-            name="patient"
-            formControlName="patient"
-            [compareWith]="comparePatient"
+            id="field_appointementTime"
+            class="field-input"
+            formControlName="appointementTime"
+            [class.is-invalid]="editForm.controls.appointementTime.invalid && editForm.controls.appointementTime.touched"
           >
-            <option [ngValue]="null"></option>
-            @for (patientOption of patientsSharedCollection; track $index) {
-              <option [ngValue]="patientOption">{{ patientOption.id }}</option>
+            <option [ngValue]="null">Select time</option>
+            @for (slot of timeOptions; track slot) {
+              <option [value]="slot">{{ slot }}</option>
+            }
+          </select>
+          @if (editForm.controls.appointementTime.invalid && editForm.controls.appointementTime.touched) {
+            <div class="field-error">Time is required.</div>
+          }
+        </div>
+      </div>
+
+      <!-- Duration / Type -->
+      <div class="form-grid">
+        <div class="field-group">
+          <label class="field-label" for="field_duration">Duration (minutes)</label>
+          <select id="field_duration" class="field-input" formControlName="duration">
+            @for (d of durationOptions; track d) {
+              <option [ngValue]="d">{{ d }} minutes</option>
+            }
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="field_type">Type</label>
+          <select id="field_type" class="field-input" formControlName="type">
+            <option [ngValue]="null">{{ 'healthCareApp.typeAppointement.null' | translate }}</option>
+            @for (t of typeAppointementValues; track t) {
+              <option [value]="t">{{ 'healthCareApp.typeAppointement.' + t | translate }}</option>
             }
           </select>
         </div>
       </div>
 
-      <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Annuler</span>
-        </button>
+      <!-- Status (full row, half width on desktop) -->
+      <div class="form-grid">
+        <div class="field-group">
+          <label class="field-label" for="field_status">Status</label>
+          <select id="field_status" class="field-input" formControlName="status">
+            <option [ngValue]="null">{{ 'healthCareApp.statusAppointement.null' | translate }}</option>
+            @for (s of statusAppointementValues; track s) {
+              <option [value]="s">{{ 'healthCareApp.statusAppointement.' + s | translate }}</option>
+            }
+          </select>
+        </div>
+        <div></div>
+      </div>
 
-        <button
-          type="submit"
-          id="save-entity"
-          data-cy="entityCreateSaveButton"
-          [disabled]="editForm.invalid || isSaving"
-          class="btn btn-primary"
-        >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Sauvegarder</span>
+      <!-- Reason -->
+      <div class="field-group field-group--full">
+        <label class="field-label" for="field_reasonAppointement">Reason for Visit</label>
+        <input
+          type="text"
+          id="field_reasonAppointement"
+          class="field-input"
+          formControlName="reasonAppointement"
+          placeholder="Reason for the appointment"
+        />
+      </div>
+
+      <!-- Notes -->
+      <div class="field-group field-group--full">
+        <label class="field-label" for="field_notes">Notes</label>
+        <textarea
+          id="field_notes"
+          class="field-input field-textarea"
+          formControlName="notes"
+          rows="3"
+          placeholder="Additional notes"
+        ></textarea>
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="previousState()">Cancel</button>
+        <button type="submit" class="btn-save" [disabled]="isSaving">
+          @if (isSaving) {
+            <fa-icon icon="sync" animation="spin"></fa-icon>&nbsp; Saving…
+          } @else {
+            <fa-icon icon="save"></fa-icon>&nbsp; Save Appointment
+          }
         </button>
       </div>
     </form>

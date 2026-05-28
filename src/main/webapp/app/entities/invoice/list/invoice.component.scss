@@ -1,0 +1,279 @@
+.invoices-page {
+  padding: 1.5rem 2rem;
+  background: #f7f9fb;
+  min-height: calc(100vh - 4rem);
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+
+  .page-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+  }
+
+  .page-subtitle {
+    color: #6b7280;
+    margin: 0.25rem 0 0;
+    font-size: 0.95rem;
+  }
+
+  .btn-add {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.6rem 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
+
+    &:hover {
+      filter: brightness(1.05);
+    }
+
+    .btn-icon {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+  }
+}
+
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
+  .summary-card {
+    border-radius: 10px;
+    padding: 1.1rem 1.25rem;
+    border: 1px solid transparent;
+
+    .summary-label {
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+    }
+
+    .summary-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    &.paid {
+      background: #ecfdf5;
+      border-color: #d1fae5;
+      .summary-label {
+        color: #047857;
+      }
+      .summary-value {
+        color: #065f46;
+      }
+    }
+
+    &.pending {
+      background: #eff6ff;
+      border-color: #dbeafe;
+      .summary-label {
+        color: #1d4ed8;
+      }
+      .summary-value {
+        color: #1e3a8a;
+      }
+    }
+
+    &.overdue {
+      background: #fef2f2;
+      border-color: #fee2e2;
+      .summary-label {
+        color: #b91c1c;
+      }
+      .summary-value {
+        color: #991b1b;
+      }
+    }
+  }
+}
+
+.filters-row {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  align-items: center;
+
+  .search-bar {
+    position: relative;
+    flex: 0 0 320px;
+
+    .search-icon {
+      position: absolute;
+      top: 50%;
+      left: 0.75rem;
+      transform: translateY(-50%);
+      color: #9ca3af;
+      display: flex;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.55rem 0.75rem 0.55rem 2.25rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      background: #fff;
+      font-size: 0.9rem;
+      outline: none;
+
+      &:focus {
+        border-color: #10b981;
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
+      }
+    }
+  }
+
+  .status-select {
+    padding: 0.55rem 2rem 0.55rem 0.75rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 0.9rem;
+    cursor: pointer;
+    outline: none;
+
+    &:focus {
+      border-color: #10b981;
+    }
+  }
+}
+
+.invoices-table-wrapper {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.invoices-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+
+  thead th {
+    text-align: left;
+    color: #6b7280;
+    font-weight: 600;
+    font-size: 0.82rem;
+    padding: 0.85rem 1rem;
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  tbody td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid #f3f4f6;
+    color: #1f2937;
+    vertical-align: middle;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  tbody tr:hover {
+    background: #f9fafb;
+  }
+
+  .invoice-number {
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .amount-col {
+    text-align: right;
+  }
+
+  .actions-col {
+    width: 60px;
+    text-align: right;
+  }
+
+  .empty-row {
+    text-align: center;
+    color: #6b7280;
+    padding: 2rem 1rem;
+  }
+}
+
+.status-pill {
+  display: inline-block;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: lowercase;
+  border: 1px solid transparent;
+
+  &.status-paid {
+    background: #ecfdf5;
+    color: #047857;
+    border-color: #a7f3d0;
+  }
+
+  &.status-sent {
+    background: #eff6ff;
+    color: #1d4ed8;
+    border-color: #bfdbfe;
+  }
+
+  &.status-overdue {
+    background: #fef2f2;
+    color: #b91c1c;
+    border-color: #fecaca;
+  }
+
+  &.status-draft {
+    background: #f3f4f6;
+    color: #374151;
+    border-color: #e5e7eb;
+  }
+
+  &.status-cancelled {
+    background: #f3f4f6;
+    color: #6b7280;
+    border-color: #e5e7eb;
+    text-decoration: line-through;
+  }
+}
+
+.menu-btn {
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  padding: 0.3rem;
+  cursor: pointer;
+  color: #6b7280;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: #f3f4f6;
+    color: #111827;
+  }
+}
+
+.dropdown-menu-card {
+  min-width: 140px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 0.25rem 0;
+}

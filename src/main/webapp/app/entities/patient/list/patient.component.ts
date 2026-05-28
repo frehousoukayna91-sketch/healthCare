@@ -1,8 +1,9 @@
-import { Component, NgZone, OnInit, inject, signal } from '@angular/core';
+import { Component, NgZone, OnInit, computed, inject, signal } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
 import { Observable, Subscription, combineLatest, filter, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import dayjs from 'dayjs/esm';
 
 import SharedModule from 'app/shared/shared.module';
 import { SortByDirective, SortDirective, SortService, type SortState, sortStateSignal } from 'app/shared/sort';
@@ -16,10 +17,12 @@ import { IPatient } from '../patient.model';
 
 import { EntityArrayResponseType, PatientService } from '../service/patient.service';
 import { PatientDeleteDialogComponent } from '../delete/patient-delete-dialog.component';
+import { PatientUpdateComponent, PATIENT_SAVED_EVENT } from '../update/patient-update.component';
 
 @Component({
   selector: 'jhi-patient',
   templateUrl: './patient.component.html',
+  styleUrl: './patient.component.scss',
   imports: [
     RouterModule,
     FormsModule,
@@ -35,6 +38,16 @@ export class PatientComponent implements OnInit {
   subscription: Subscription | null = null;
   patients = signal<IPatient[]>([]);
   isLoading = false;
+  searchTerm = signal('');
+
+  filteredPatients = computed(() => {
+    const term = this.searchTerm().toLowerCase();
+    if (!term) return this.patients();
+    return this.patients().filter(p => {
+      const fullName = `${p.firstName ?? ''} ${p.nom ?? ''} ${p.lastName ?? ''}`.toLowerCase();
+      return fullName.includes(term) || (p.email ?? '').toLowerCase().includes(term) || (p.phone ?? '').includes(term);
+    });
+  });
 
   sortState = sortStateSignal({});
   filters: IFilterOptions = new FilterOptions();
@@ -52,6 +65,17 @@ export class PatientComponent implements OnInit {
 
   trackId = (item: IPatient): number => this.patientService.getPatientIdentifier(item);
 
+  getInitials(patient: IPatient): string {
+    const first = patient.firstName?.charAt(0) ?? '';
+    const last = (patient.nom ?? patient.lastName)?.charAt(0) ?? '';
+    return (first + last).toUpperCase() || '?';
+  }
+
+  getAge(patient: IPatient): number | null {
+    if (!patient.dateBirth) return null;
+    return dayjs().diff(patient.dateBirth, 'year');
+  }
+
   ngOnInit(): void {
     this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])
       .pipe(
@@ -63,10 +87,19 @@ export class PatientComponent implements OnInit {
     this.filters.filterChanges.subscribe(filterOptions => this.handleNavigation(1, this.sortState(), filterOptions));
   }
 
+  openNewPatientDialog(): void {
+    const modalRef = this.modalService.open(PatientUpdateComponent, { size: 'lg', backdrop: 'static', scrollable: true });
+    modalRef.closed
+      .pipe(
+        filter(reason => reason === PATIENT_SAVED_EVENT),
+        tap(() => this.load()),
+      )
+      .subscribe();
+  }
+
   delete(patient: IPatient): void {
     const modalRef = this.modalService.open(PatientDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.patient = patient;
-    // unsubscribe not needed because closed completes on modal close
     modalRef.closed
       .pipe(
         filter(reason => reason === ITEM_DELETED_EVENT),

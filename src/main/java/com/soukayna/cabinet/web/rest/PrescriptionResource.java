@@ -11,7 +11,10 @@ import com.soukayna.cabinet.service.criteria.PrescriptionCriteria;
 import com.soukayna.cabinet.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -81,11 +84,19 @@ public class PrescriptionResource {
             throw new BadRequestAlertException("A new prescription cannot already have an ID", ENTITY_NAME, "idexists");
         }
         validatePrescriptionRequiredForCreate(prescription);
-        prescription = attachAndValidatePrescriptionItems(prescription);
-        prescription = prescriptionService.save(prescription);
-        return ResponseEntity.created(new URI("/api/prescriptions/" + prescription.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, prescription.getId().toString()))
-            .body(prescription);
+
+        Set<PrescriptionItem> requestedItems = prescription.getPrescriptionItems() == null
+            ? new HashSet<>()
+            : new HashSet<>(prescription.getPrescriptionItems());
+        prescription.setPrescriptionItems(new HashSet<>());
+
+        Prescription saved = prescriptionService.save(prescription);
+        Set<PrescriptionItem> persistedItems = persistItemsForPrescription(saved, requestedItems);
+        saved.setPrescriptionItems(persistedItems);
+
+        return ResponseEntity.created(new URI("/api/prescriptions/" + saved.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, saved.getId().toString()))
+            .body(saved);
     }
 
     /**
@@ -108,11 +119,19 @@ public class PrescriptionResource {
         }
 
         validatePatientIfProvided(prescription);
-        prescription = attachAndValidatePrescriptionItems(prescription);
-        prescription = prescriptionService.update(prescription);
+
+        Set<PrescriptionItem> requestedItems = prescription.getPrescriptionItems() == null
+            ? new HashSet<>()
+            : new HashSet<>(prescription.getPrescriptionItems());
+        prescription.setPrescriptionItems(new HashSet<>());
+
+        Prescription saved = prescriptionService.update(prescription);
+        Set<PrescriptionItem> persistedItems = persistItemsForPrescription(saved, requestedItems);
+        saved.setPrescriptionItems(persistedItems);
+
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, prescription.getId().toString()))
-            .body(prescription);
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, saved.getId().toString()))
+            .body(saved);
     }
 
     /**
@@ -212,27 +231,46 @@ public class PrescriptionResource {
         }
     }
 
-    private Prescription attachAndValidatePrescriptionItems(Prescription prescription) {
-        if (prescription.getPrescriptionItems() == null) {
-            return prescription;
-        }
-        if (prescription.getPrescriptionItems().isEmpty()) {
-            return prescription;
-        }
+    private Set<PrescriptionItem> persistItemsForPrescription(Prescription prescription, Set<PrescriptionItem> requestedItems) {
+        Set<Long> existingItemIds = requestedItems
+            .stream()
+            .map(PrescriptionItem::getId)
+            .filter(Objects::nonNull)
+            .collect(Collectors.toSet());
 
-        Set<Long> itemIds = prescription.getPrescriptionItems().stream().map(PrescriptionItem::getId).collect(Collectors.toSet());
-
-        if (itemIds.contains(null)) {
-            throw new BadRequestAlertException("Each prescription item must have an id", ENTITY_NAME, "prescriptionitemidnull");
-        }
-
-        Set<PrescriptionItem> managedItems = prescriptionItemRepository.findAllById(itemIds).stream().collect(Collectors.toSet());
-        if (managedItems.size() != itemIds.size()) {
-            throw new BadRequestAlertException("One or more prescription items not found", ENTITY_NAME, "prescriptionitemnotfound");
+        Map<Long, PrescriptionItem> managedById = new HashMap<>();
+        if (!existingItemIds.isEmpty()) {
+            prescriptionItemRepository.findAllById(existingItemIds).forEach(item -> managedById.put(item.getId(), item));
+            if (managedById.size() != existingItemIds.size()) {
+                throw new BadRequestAlertException("One or more prescription items not found", ENTITY_NAME, "prescriptionitemnotfound");
+            }
         }
 
-        managedItems.forEach(item -> item.setPrescription(prescription));
-        prescription.setPrescriptionItems(managedItems);
-        return prescription;
+        List<PrescriptionItem> currentItems = prescriptionItemRepository.findByPrescriptionId(prescription.getId());
+        Set<Long> keptIds = managedById.keySet();
+        for (PrescriptionItem existing : currentItems) {
+            if (!keptIds.contains(existing.getId())) {
+                prescriptionItemRepository.deleteById(existing.getId());
+            }
+        }
+
+        Set<PrescriptionItem> toSave = new HashSet<>();
+        for (PrescriptionItem input : requestedItems) {
+            PrescriptionItem target;
+            if (input.getId() != null) {
+                target = managedById.get(input.getId());
+                target.setMedicationName(input.getMedicationName());
+                target.setMedicationDosage(input.getMedicationDosage());
+                target.setFrequency(input.getFrequency());
+                target.setDuration(input.getDuration());
+                target.setInstructions(input.getInstructions());
+            } else {
+                target = input;
+            }
+            target.setPrescription(prescription);
+            toSave.add(target);
+        }
+
+        return new HashSet<>(prescriptionItemRepository.saveAll(toSave));
     }
 }

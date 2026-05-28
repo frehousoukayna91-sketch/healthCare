@@ -1,0 +1,251 @@
+.form-page {
+  padding: 2rem;
+  background-color: #f5f6fa;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+
+  &.is-modal {
+    padding: 0;
+    background: none;
+    min-height: unset;
+
+    .form-card {
+      max-height: 82vh;
+      overflow-y: auto;
+      border-radius: 0;
+      box-shadow: none;
+      border: none;
+
+      // scrollbar fin et discret
+      scrollbar-width: thin;
+      scrollbar-color: #d1d5db transparent;
+
+      &::-webkit-scrollbar {
+        width: 5px;
+      }
+      &::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: #d1d5db;
+        border-radius: 4px;
+      }
+    }
+  }
+}
+
+.form-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+  border: 1px solid #f0f0f0;
+  padding: 2rem 2.25rem;
+  width: 100%;
+  max-width: 780px;
+  height: fit-content;
+}
+
+// ── Header ────────────────────────────────────────────────────────────────────
+
+.form-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0 0.25rem;
+  &:hover {
+    color: #111827;
+  }
+}
+
+.required-star {
+  color: #dc2626;
+  margin-left: 2px;
+}
+
+.field-error {
+  font-size: 0.78rem;
+  color: #dc2626;
+  margin-top: 2px;
+}
+
+.field-input.is-invalid {
+  border-color: #dc2626;
+  &:focus {
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+  }
+}
+
+.form-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.form-subtitle {
+  color: #6b7280;
+  margin: 0.25rem 0 0;
+  font-size: 0.9rem;
+}
+
+// ── Sections ──────────────────────────────────────────────────────────────────
+
+.form-section {
+  margin-bottom: 1.75rem;
+}
+
+.section-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #059669;
+  margin: 0 0 1rem;
+}
+
+// ── Grid ──────────────────────────────────────────────────────────────────────
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem 1.25rem;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ── Fields ────────────────────────────────────────────────────────────────────
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+
+  &--full {
+    grid-column: 1 / -1;
+  }
+}
+
+.field-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.field-input {
+  padding: 0.65rem 0.9rem;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #111827;
+  background: #fff;
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+  width: 100%;
+
+  &::placeholder {
+    color: #9ca3af;
+  }
+
+  &:focus {
+    border-color: #059669;
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+  }
+}
+
+.field-textarea {
+  resize: vertical;
+  min-height: 72px;
+}
+
+.input-date-wrapper {
+  display: flex;
+  gap: 0;
+
+  .field-input {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    flex: 1;
+  }
+}
+
+.date-toggle-btn {
+  padding: 0 0.75rem;
+  background: #f9fafb;
+  border: 1.5px solid #e5e7eb;
+  border-left: none;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  color: #6b7280;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover {
+    background: #f3f4f6;
+    color: #374151;
+  }
+}
+
+// ── Actions ───────────────────────────────────────────────────────────────────
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #f3f4f6;
+  margin-top: 0.5rem;
+}
+
+.btn-cancel {
+  padding: 0.6rem 1.25rem;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fff;
+  color: #374151;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover {
+    background: #f9fafb;
+  }
+}
+
+.btn-save {
+  padding: 0.6rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  background: #059669;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover:not(:disabled) {
+    background: #047857;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}

@@ -12,7 +12,7 @@
       "updated": "Le Patient avec l'identifiant {{ param }} a été mis à jour",
       "deleted": "Le Patient avec l'identifiant {{ param }} a été supprimé",
       "delete": {
-        "question": "Êtes-vous certain de vouloir supprimer le Patient {{ id }} ?"
+        "question": "Êtes-vous certain de vouloir supprimer le Patient {{ nom }} {{ prenom }} ?"
       },
       "detail": {
         "title": "Patient"

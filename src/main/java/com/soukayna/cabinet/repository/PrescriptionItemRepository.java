@@ -1,6 +1,7 @@
 package com.soukayna.cabinet.repository;
 
 import com.soukayna.cabinet.domain.PrescriptionItem;
+import java.util.List;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface PrescriptionItemRepository extends JpaRepository<PrescriptionItem, Long>, JpaSpecificationExecutor<PrescriptionItem> {}
+public interface PrescriptionItemRepository extends JpaRepository<PrescriptionItem, Long>, JpaSpecificationExecutor<PrescriptionItem> {
+    List<PrescriptionItem> findByPrescriptionId(Long prescriptionId);
+}

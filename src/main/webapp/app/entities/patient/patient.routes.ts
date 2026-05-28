@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 
-import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 import { ASC } from 'app/config/navigation.constants';
 import PatientResolve from './route/patient-routing-resolve.service';
 
@@ -11,7 +10,6 @@ const patientRoute: Routes = [
     data: {
       defaultSort: `id,${ASC}`,
     },
-    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/view',
@@ -19,15 +17,6 @@ const patientRoute: Routes = [
     resolve: {
       patient: PatientResolve,
     },
-    canActivate: [UserRouteAccessService],
-  },
-  {
-    path: 'new',
-    loadComponent: () => import('./update/patient-update.component').then(m => m.PatientUpdateComponent),
-    resolve: {
-      patient: PatientResolve,
-    },
-    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/edit',
@@ -35,7 +24,6 @@ const patientRoute: Routes = [
     resolve: {
       patient: PatientResolve,
     },
-    canActivate: [UserRouteAccessService],
   },
 ];
 

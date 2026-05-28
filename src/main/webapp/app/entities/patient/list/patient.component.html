@@ -1,214 +1,166 @@
-<div>
-  <h2 id="page-heading" data-cy="PatientHeading">
-    <span jhiTranslate="healthCareApp.patient.home.title">Patients</span>
-
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
-        <span jhiTranslate="healthCareApp.patient.home.refreshListLabel">Actualiser la liste</span>
-      </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-patient"
-        [routerLink]="['/patient/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="healthCareApp.patient.home.createLabel">Créer un nouveau Patient</span>
-      </button>
+<div class="patients-page">
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Patients</h1>
+      <p class="page-subtitle">Manage your patient records</p>
     </div>
-  </h2>
+    <button class="btn-add-patient" (click)="openNewPatientDialog()"><span class="btn-icon">+</span> Add Patient</button>
+  </div>
 
   <jhi-alert-error />
-
   <jhi-alert />
 
-  <jhi-filter [filters]="filters" />
-
-  @if (patients().length === 0) {
-    <div class="alert alert-warning" id="no-result">
-      <span jhiTranslate="healthCareApp.patient.home.notFound">Aucun Patient trouvé</span>
+  <!-- Search Bar -->
+  <div class="search-container">
+    <div class="search-wrapper">
+      <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Search patients..."
+        [ngModel]="searchTerm()"
+        (ngModelChange)="searchTerm.set($event)"
+      />
     </div>
-  } @else {
-    <div class="table-responsive table-entities" id="entities">
-      <table class="table table-striped" aria-describedby="page-heading">
-        <thead>
-          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
-            <th scope="col" jhiSortBy="id">
-              <div class="d-flex">
-                <span jhiTranslate="global.field.id">ID</span>
+  </div>
 
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="nom">
-              <div class="d-flex">
-                <span jhiTranslate="healthCareApp.patient.nom">Nom</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="lastName">
-              <div class="d-flex">
-                <span jhiTranslate="healthCareApp.patient.lastName">Last Name</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="firstName">
-              <div class="d-flex">
-                <span jhiTranslate="healthCareApp.patient.firstName">First Name</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="dateBirth">
-              <div class="d-flex">
-                <span jhiTranslate="healthCareApp.patient.dateBirth">Date Birth</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="phone">
-              <div class="d-flex">
-                <span jhiTranslate="healthCareApp.patient.phone">Phone</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="email">
-              <div class="d-flex">
-                <span jhiTranslate="healthCareApp.patient.email">Email</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="address">
-              <div class="d-flex">
-                <span jhiTranslate="healthCareApp.patient.address">Address</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="bloodType">
-              <div class="d-flex">
-                <span jhiTranslate="healthCareApp.patient.bloodType">Blood Type</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="allergies">
-              <div class="d-flex">
-                <span jhiTranslate="healthCareApp.patient.allergies">Allergies</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="notes">
-              <div class="d-flex">
-                <span jhiTranslate="healthCareApp.patient.notes">Notes</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="emergencyContactName">
-              <div class="d-flex">
-                <span jhiTranslate="healthCareApp.patient.emergencyContactName">Emergency Contact Name</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="emeregencyContactPhone">
-              <div class="d-flex">
-                <span jhiTranslate="healthCareApp.patient.emeregencyContactPhone">Emeregency Contact Phone</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="chronicdiseases">
-              <div class="d-flex">
-                <span jhiTranslate="healthCareApp.patient.chronicdiseases">Chronicdiseases</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="medicalHistory">
-              <div class="d-flex">
-                <span jhiTranslate="healthCareApp.patient.medicalHistory">Medical History</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (patient of patients(); track trackId(patient)) {
-            <tr data-cy="entityTable">
-              <td>
-                <a [routerLink]="['/patient', patient.id, 'view']">{{ patient.id }}</a>
-              </td>
-              <td>{{ patient.nom }}</td>
-              <td>{{ patient.lastName }}</td>
-              <td>{{ patient.firstName }}</td>
-              <td>{{ patient.dateBirth | formatMediumDate }}</td>
-              <td>{{ patient.phone }}</td>
-              <td>{{ patient.email }}</td>
-              <td>{{ patient.address }}</td>
-              <td>{{ patient.bloodType }}</td>
-              <td>{{ patient.allergies }}</td>
-              <td>{{ patient.notes }}</td>
-              <td>{{ patient.emergencyContactName }}</td>
-              <td>{{ patient.emeregencyContactPhone }}</td>
-              <td>{{ patient.chronicdiseases }}</td>
-              <td>{{ patient.medicalHistory }}</td>
-              <td class="text-end">
-                <div class="btn-group">
-                  <button
-                    type="submit"
-                    [routerLink]="['/appointement']"
-                    [queryParams]="{ 'filter[patientId.in]': patient.id }"
-                    class="btn btn-info btn-sm"
-                    data-cy="filterOtherEntityButton"
-                  >
-                    <fa-icon icon="eye"></fa-icon>
-                    <span
-                      class="d-none d-md-inline"
-                      jhiTranslate="entity.action.show"
-                      [translateValues]="{ otherEntity: ('healthCareApp.patient.appointement' | translate) }"
-                      >Show Appointement</span
-                    >
-                  </button>
-                  <a [routerLink]="['/patient', patient.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                    <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
-                  </a>
-
-                  <a [routerLink]="['/patient', patient.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
-                    <fa-icon icon="pencil-alt"></fa-icon>
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
-                  </a>
-
-                  <button type="submit" (click)="delete(patient)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                    <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
+  <!-- Empty state -->
+  @if (filteredPatients().length === 0) {
+    <div class="empty-state">
+      @if (patients().length === 0 && isLoading) {
+        <p>Loading patients...</p>
+      } @else if (patients().length === 0) {
+        <p>No patients found. Click <strong>Add Patient</strong> to get started.</p>
+      } @else {
+        <p>
+          No results for "<strong>{{ searchTerm() }}</strong
+          >"
+        </p>
+      }
     </div>
   }
+
+  <!-- Patient Cards Grid -->
+  @if (filteredPatients().length > 0) {
+    <div class="patients-grid">
+      @for (patient of filteredPatients(); track trackId(patient)) {
+        <div class="patient-card">
+          <!-- Card Header: avatar + name + menu -->
+          <div class="card-header-row">
+            <div class="patient-avatar">{{ getInitials(patient) }}</div>
+
+            <div class="patient-info">
+              <h3 class="patient-name">{{ patient.firstName }} {{ patient.nom ?? patient.lastName }}</h3>
+              <div class="patient-meta">
+                @if (getAge(patient) !== null) {
+                  <span>{{ getAge(patient) }} years old</span>
+                }
+                @if (getAge(patient) !== null && patient.bloodType) {
+                  <span class="meta-dot">•</span>
+                }
+                @if (patient.bloodType) {
+                  <span class="blood-type-badge">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="blood-icon">
+                      <path d="M12 2C12 2 4 10 4 15a8 8 0 0 0 16 0c0-5-8-13-8-13z" />
+                    </svg>
+                    {{ patient.bloodType }}
+                  </span>
+                }
+              </div>
+            </div>
+
+            <!-- Three-dot dropdown menu -->
+            <div ngbDropdown placement="bottom-end" class="card-menu">
+              <button class="menu-btn" ngbDropdownToggle title="Actions">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                  <circle cx="12" cy="5" r="1.5" />
+                  <circle cx="12" cy="12" r="1.5" />
+                  <circle cx="12" cy="19" r="1.5" />
+                </svg>
+              </button>
+              <div ngbDropdownMenu class="dropdown-menu-card">
+                <a ngbDropdownItem [routerLink]="['/patient', patient.id, 'view']"> <fa-icon icon="eye" class="me-2"></fa-icon> View </a>
+                <a ngbDropdownItem [routerLink]="['/patient', patient.id, 'edit']">
+                  <fa-icon icon="pencil-alt" class="me-2"></fa-icon> Edit
+                </a>
+                <button ngbDropdownItem class="text-danger" (click)="delete(patient)">
+                  <fa-icon icon="times" class="me-2"></fa-icon> Delete
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact Info -->
+          <div class="contact-info">
+            @if (patient.phone) {
+              <div class="contact-row">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  class="contact-icon"
+                >
+                  <path
+                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.61a16 16 0 0 0 5.48 5.48l.91-.91a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+                  />
+                </svg>
+                <span>{{ patient.phone }}</span>
+              </div>
+            }
+            @if (patient.email) {
+              <div class="contact-row">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  class="contact-icon"
+                >
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+                <span>{{ patient.email }}</span>
+              </div>
+            }
+          </div>
+
+          <!-- Allergies Warning -->
+          @if (patient.allergies) {
+            <div class="allergies-badge">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                class="allergy-icon"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              <span>Allergies: {{ patient.allergies }}</span>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Pagination -->
   @if (patients().length > 0) {
-    <div>
+    <div class="pagination-container">
       <div class="d-flex justify-content-center">
         <jhi-item-count [params]="{ page, totalItems, itemsPerPage }" />
       </div>
-
-      <div class="d-flex justify-content-center">
+      <div class="d-flex justify-content-center mt-2">
         <ngb-pagination
           [collectionSize]="totalItems"
           [page]="page"
