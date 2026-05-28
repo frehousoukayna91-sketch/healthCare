@@ -1,7 +1,11 @@
 import { Routes } from '@angular/router';
 
 import { ASC } from 'app/config/navigation.constants';
+import { Authority } from 'app/config/authority.constants';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 import AppointementResolve from './route/appointement-routing-resolve.service';
+
+const APPOINTEMENT_AUTHORITIES = [Authority.MEDECIN, Authority.SECRETAIRE, Authority.ADMIN];
 
 const appointementRoute: Routes = [
   {
@@ -9,7 +13,9 @@ const appointementRoute: Routes = [
     loadComponent: () => import('./list/appointement.component').then(m => m.AppointementComponent),
     data: {
       defaultSort: `id,${ASC}`,
+      authorities: APPOINTEMENT_AUTHORITIES,
     },
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/view',
@@ -17,6 +23,8 @@ const appointementRoute: Routes = [
     resolve: {
       appointement: AppointementResolve,
     },
+    data: { authorities: APPOINTEMENT_AUTHORITIES },
+    canActivate: [UserRouteAccessService],
   },
   {
     path: 'new',
@@ -24,6 +32,8 @@ const appointementRoute: Routes = [
     resolve: {
       appointement: AppointementResolve,
     },
+    data: { authorities: APPOINTEMENT_AUTHORITIES },
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/edit',
@@ -31,6 +41,8 @@ const appointementRoute: Routes = [
     resolve: {
       appointement: AppointementResolve,
     },
+    data: { authorities: APPOINTEMENT_AUTHORITIES },
+    canActivate: [UserRouteAccessService],
   },
 ];
 

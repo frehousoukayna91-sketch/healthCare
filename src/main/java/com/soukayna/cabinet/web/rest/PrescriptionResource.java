@@ -5,6 +5,7 @@ import com.soukayna.cabinet.domain.PrescriptionItem;
 import com.soukayna.cabinet.repository.PatientRepository;
 import com.soukayna.cabinet.repository.PrescriptionItemRepository;
 import com.soukayna.cabinet.repository.PrescriptionRepository;
+import com.soukayna.cabinet.security.AuthoritiesConstants;
 import com.soukayna.cabinet.service.PrescriptionQueryService;
 import com.soukayna.cabinet.service.PrescriptionService;
 import com.soukayna.cabinet.service.criteria.PrescriptionCriteria;
@@ -26,6 +27,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -37,6 +39,7 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api/prescriptions")
+@PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.MEDECIN + "\", \"" + AuthoritiesConstants.ADMIN + "\")")
 public class PrescriptionResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(PrescriptionResource.class);

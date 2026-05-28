@@ -18,21 +18,30 @@
         <i class="pi pi-th-large"></i>
         <span>Tableau de bord</span>
       </a>
-      <a routerLink="/patient" routerLinkActive="active" class="sakai-link">
+      <a routerLink="/patient" routerLinkActive="active" class="sakai-link" *jhiHasAnyAuthority="['ROLE_MEDECIN', 'ROLE_ADMIN']">
         <i class="pi pi-users"></i>
         <span>Patients</span>
       </a>
-      <a routerLink="/appointement" routerLinkActive="active" class="sakai-link">
+      <a
+        routerLink="/appointement"
+        routerLinkActive="active"
+        class="sakai-link"
+        *jhiHasAnyAuthority="['ROLE_MEDECIN', 'ROLE_SECRETAIRE', 'ROLE_ADMIN']"
+      >
         <i class="pi pi-calendar"></i>
         <span>Rendez-vous</span>
       </a>
-      <a routerLink="/prescription" routerLinkActive="active" class="sakai-link">
+      <a routerLink="/prescription" routerLinkActive="active" class="sakai-link" *jhiHasAnyAuthority="['ROLE_MEDECIN', 'ROLE_ADMIN']">
         <i class="pi pi-file-edit"></i>
         <span>Prescriptions</span>
       </a>
-      <a routerLink="/invoice" routerLinkActive="active" class="sakai-link">
+      <a routerLink="/invoice" routerLinkActive="active" class="sakai-link" *jhiHasAnyAuthority="['ROLE_SECRETAIRE', 'ROLE_ADMIN']">
         <i class="pi pi-receipt"></i>
         <span>Factures</span>
+      </a>
+      <a routerLink="/admin/user-management" routerLinkActive="active" class="sakai-link" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+        <i class="pi pi-cog"></i>
+        <span>Utilisateurs</span>
       </a>
     </div>
   </p-sidebar>

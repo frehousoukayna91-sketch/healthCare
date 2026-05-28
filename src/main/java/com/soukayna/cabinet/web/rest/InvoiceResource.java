@@ -2,6 +2,7 @@ package com.soukayna.cabinet.web.rest;
 
 import com.soukayna.cabinet.domain.Invoice;
 import com.soukayna.cabinet.repository.InvoiceRepository;
+import com.soukayna.cabinet.security.AuthoritiesConstants;
 import com.soukayna.cabinet.service.InvoiceQueryService;
 import com.soukayna.cabinet.service.InvoiceService;
 import com.soukayna.cabinet.service.criteria.InvoiceCriteria;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -29,6 +31,7 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api/invoices")
+@PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.SECRETAIRE + "\", \"" + AuthoritiesConstants.ADMIN + "\")")
 public class InvoiceResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceResource.class);

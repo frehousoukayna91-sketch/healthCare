@@ -6,6 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { SidebarModule } from 'primeng/sidebar';
 
 import { AccountService } from 'app/core/auth/account.service';
+import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
 import { AppPageTitleStrategy } from 'app/app-page-title-strategy';
 import FooterComponent from '../footer/footer.component';
 
@@ -14,7 +15,7 @@ import FooterComponent from '../footer/footer.component';
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
   providers: [AppPageTitleStrategy],
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, FooterComponent, ButtonModule, SidebarModule],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, FooterComponent, ButtonModule, SidebarModule, HasAnyAuthorityDirective],
 })
 export default class MainComponent implements OnInit {
   private readonly renderer: Renderer2;
