@@ -83,9 +83,17 @@
                 </svg>
               </button>
               <div ngbDropdownMenu class="dropdown-menu-card">
-                <a ngbDropdownItem [routerLink]="['/patient', patient.id, 'view']"> <fa-icon icon="eye" class="me-2"></fa-icon> View </a>
+                <a ngbDropdownItem [routerLink]="['/patient', patient.id, 'history']">
+                  <fa-icon icon="book" class="me-2"></fa-icon> View History
+                </a>
                 <a ngbDropdownItem [routerLink]="['/patient', patient.id, 'edit']">
                   <fa-icon icon="pencil-alt" class="me-2"></fa-icon> Edit
+                </a>
+                <a ngbDropdownItem [routerLink]="['/appointement/new']">
+                  <fa-icon icon="calendar-alt" class="me-2"></fa-icon> Schedule Appointment
+                </a>
+                <a ngbDropdownItem [routerLink]="['/prescription/new']">
+                  <fa-icon icon="pencil-alt" class="me-2"></fa-icon> New Prescription
                 </a>
                 <button ngbDropdownItem class="text-danger" (click)="delete(patient)">
                   <fa-icon icon="times" class="me-2"></fa-icon> Delete

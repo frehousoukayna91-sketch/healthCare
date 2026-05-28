@@ -1,0 +1,157 @@
+@if (patient(); as p) {
+  <div class="history-page">
+    <div class="history-header">
+      <button class="back-btn" (click)="previousState()" title="Back">
+        <i class="pi pi-arrow-left"></i>
+      </button>
+      <div>
+        <h1 class="history-title">Patient History</h1>
+        <p class="history-subtitle">Complete medical history and records</p>
+      </div>
+    </div>
+
+    <div class="patient-card">
+      <div class="patient-card-main">
+        <div class="patient-avatar">{{ getInitials(p) }}</div>
+        <div class="patient-info">
+          <h2 class="patient-name">{{ p.firstName }} {{ p.nom ?? p.lastName }}</h2>
+          <div class="patient-meta">
+            @if (getAge(p) !== null) {
+              <span>{{ getAge(p) }} years old</span>
+              <span class="meta-dot">•</span>
+            }
+            <span>{{ p.notes ? p.notes : 'Patient' }}</span>
+            @if (p.bloodType) {
+              <span class="blood-badge">
+                <i class="pi pi-heart-fill"></i>
+                {{ p.bloodType }}
+              </span>
+            }
+          </div>
+        </div>
+        <div class="patient-actions">
+          <a [routerLink]="['/appointement/new']" class="btn btn-outline"> <i class="pi pi-calendar"></i> Schedule </a>
+          <a [routerLink]="['/prescription/new']" class="btn btn-primary"> <i class="pi pi-file-edit"></i> Prescribe </a>
+        </div>
+      </div>
+
+      <div class="contact-row">
+        @if (p.phone) {
+          <span class="contact-item"><i class="pi pi-phone"></i> {{ p.phone }}</span>
+        }
+        @if (p.email) {
+          <span class="contact-item"><i class="pi pi-envelope"></i> {{ p.email }}</span>
+        }
+        @if (p.address) {
+          <span class="contact-item"><i class="pi pi-map-marker"></i> {{ p.address }}</span>
+        }
+      </div>
+
+      @if (p.allergies) {
+        <div class="alert-row alert-row--warning">
+          <i class="pi pi-exclamation-triangle"></i>
+          <strong>Allergies:</strong> {{ p.allergies }}
+        </div>
+      }
+      @if (p.chronicdiseases) {
+        <div class="alert-row alert-row--info"><strong>Medical Conditions:</strong> {{ p.chronicdiseases }}</div>
+      }
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-value stat-value--dark">{{ totalAppointments() }}</span>
+        <span class="stat-label">Total Appointments</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value stat-value--teal">{{ completedVisits() }}</span>
+        <span class="stat-label">Completed Visits</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value stat-value--purple">{{ totalPrescriptions() }}</span>
+        <span class="stat-label">Prescriptions</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value stat-value--blue">{{ totalPaid() | number: '1.0-2' }} €</span>
+        <span class="stat-label">Total Paid</span>
+      </div>
+    </div>
+
+    <div class="tabs-panel">
+      <div class="tabs-header">
+        <button class="tab-btn" [class.active]="activeTab() === 'appointments'" (click)="setTab('appointments')">
+          <i class="pi pi-calendar"></i> Appointments ({{ totalAppointments() }})
+        </button>
+        <button class="tab-btn" [class.active]="activeTab() === 'prescriptions'" (click)="setTab('prescriptions')">
+          <i class="pi pi-file-edit"></i> Prescriptions ({{ totalPrescriptions() }})
+        </button>
+        <button class="tab-btn" [class.active]="activeTab() === 'invoices'" (click)="setTab('invoices')">
+          <i class="pi pi-file"></i> Invoices ({{ invoices().length }})
+        </button>
+      </div>
+
+      <div class="tab-content">
+        @if (activeTab() === 'appointments') {
+          @if (appointments().length === 0) {
+            <div class="empty">No appointments yet.</div>
+          } @else {
+            @for (a of appointments(); track a.id) {
+              <div class="row-item">
+                <div class="row-icon row-icon--teal"><i class="pi pi-calendar"></i></div>
+                <div class="row-body">
+                  <div class="row-title">{{ a.appointementDate ? a.appointementDate.format('DD MMM YYYY') : '—' }}</div>
+                  <div class="row-sub">
+                    @if (a.appointementTime) {
+                      <span><i class="pi pi-clock"></i> {{ a.appointementTime }}</span>
+                      <span class="meta-dot">•</span>
+                    }
+                    <span>{{ a.type }}</span>
+                    @if (a.reasonAppointement) {
+                      <div class="row-extra">{{ a.reasonAppointement }}</div>
+                    }
+                  </div>
+                </div>
+                <span class="badge badge--{{ (a.status || '').toLowerCase() }}">{{ (a.status || '').toLowerCase() }}</span>
+              </div>
+            }
+          }
+        }
+
+        @if (activeTab() === 'prescriptions') {
+          @if (prescriptions().length === 0) {
+            <div class="empty">No prescriptions yet.</div>
+          } @else {
+            @for (pr of prescriptions(); track pr.id) {
+              <div class="row-item">
+                <div class="row-icon row-icon--purple"><i class="pi pi-file-edit"></i></div>
+                <div class="row-body">
+                  <div class="row-title">{{ pr.diagnosis || 'Prescription' }}</div>
+                  <div class="row-sub">{{ pr.prescriptionDate ? pr.prescriptionDate.format('DD MMM YYYY') : '' }}</div>
+                </div>
+              </div>
+            }
+          }
+        }
+
+        @if (activeTab() === 'invoices') {
+          @if (invoices().length === 0) {
+            <div class="empty">No invoices yet.</div>
+          } @else {
+            @for (inv of invoices(); track inv.id) {
+              <div class="row-item">
+                <div class="row-icon row-icon--orange"><i class="pi pi-file"></i></div>
+                <div class="row-body">
+                  <div class="row-title">{{ inv.invoiceNumber || 'Invoice #' + inv.id }}</div>
+                  <div class="row-sub">{{ inv.date ? inv.date.format('DD MMM YYYY') : '' }} · {{ inv.total | number: '1.2-2' }} €</div>
+                </div>
+                <span class="badge badge--{{ (inv.status || '').toLowerCase() }}">{{ (inv.status || '').toLowerCase() }}</span>
+              </div>
+            }
+          }
+        }
+      </div>
+    </div>
+  </div>
+} @else if (!loading()) {
+  <div class="empty-state-page">Patient not found.</div>
+}

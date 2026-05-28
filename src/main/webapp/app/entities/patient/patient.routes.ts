@@ -19,6 +19,10 @@ const patientRoute: Routes = [
     },
   },
   {
+    path: ':id/history',
+    loadComponent: () => import('./history/patient-history.component').then(m => m.PatientHistoryComponent),
+  },
+  {
     path: ':id/edit',
     loadComponent: () => import('./update/patient-update.component').then(m => m.PatientUpdateComponent),
     resolve: {
