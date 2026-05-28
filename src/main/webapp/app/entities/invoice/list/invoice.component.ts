@@ -25,13 +25,21 @@ export class InvoiceComponent implements OnInit {
   isLoading = false;
 
   readonly statusOptions: { value: string; label: string }[] = [
-    { value: 'ALL', label: 'All Status' },
-    { value: InvoiceStatus.DRAFT, label: 'Draft' },
-    { value: InvoiceStatus.SENT, label: 'Sent' },
-    { value: InvoiceStatus.PAID, label: 'Paid' },
-    { value: InvoiceStatus.OVERDUE, label: 'Overdue' },
-    { value: InvoiceStatus.CANCELLED, label: 'Cancelled' },
+    { value: 'ALL', label: 'Tous les statuts' },
+    { value: InvoiceStatus.DRAFT, label: 'Brouillon' },
+    { value: InvoiceStatus.SENT, label: 'Envoyée' },
+    { value: InvoiceStatus.PAID, label: 'Payée' },
+    { value: InvoiceStatus.OVERDUE, label: 'En retard' },
+    { value: InvoiceStatus.CANCELLED, label: 'Annulée' },
   ];
+
+  private readonly statusLabels: Record<string, string> = {
+    [InvoiceStatus.DRAFT]: 'brouillon',
+    [InvoiceStatus.SENT]: 'envoyée',
+    [InvoiceStatus.PAID]: 'payée',
+    [InvoiceStatus.OVERDUE]: 'en retard',
+    [InvoiceStatus.CANCELLED]: 'annulée',
+  };
 
   filteredInvoices = computed(() => {
     const term = this.searchTerm().trim().toLowerCase();
@@ -78,7 +86,7 @@ export class InvoiceComponent implements OnInit {
 
   statusLabel(status: string | null | undefined): string {
     if (!status) return '';
-    return status.toLowerCase();
+    return this.statusLabels[status] ?? status.toLowerCase();
   }
 
   statusClass(status: string | null | undefined): string {

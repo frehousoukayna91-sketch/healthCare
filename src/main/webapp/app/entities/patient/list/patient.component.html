@@ -3,9 +3,9 @@
   <div class="page-header">
     <div>
       <h1 class="page-title">Patients</h1>
-      <p class="page-subtitle">Manage your patient records</p>
+      <p class="page-subtitle">Gérez vos dossiers patients</p>
     </div>
-    <button class="btn-add-patient" (click)="openNewPatientDialog()"><span class="btn-icon">+</span> Add Patient</button>
+    <button class="btn-add-patient" (click)="openNewPatientDialog()"><span class="btn-icon">+</span> Ajouter un patient</button>
   </div>
 
   <jhi-alert-error />
@@ -21,7 +21,7 @@
       <input
         type="text"
         class="search-input"
-        placeholder="Search patients..."
+        placeholder="Rechercher un patient..."
         [ngModel]="searchTerm()"
         (ngModelChange)="searchTerm.set($event)"
       />
@@ -32,13 +32,13 @@
   @if (filteredPatients().length === 0) {
     <div class="empty-state">
       @if (patients().length === 0 && isLoading) {
-        <p>Loading patients...</p>
+        <p>Chargement des patients...</p>
       } @else if (patients().length === 0) {
-        <p>No patients found. Click <strong>Add Patient</strong> to get started.</p>
+        <p>Aucun patient. Cliquez sur <strong>Ajouter un patient</strong> pour commencer.</p>
       } @else {
         <p>
-          No results for "<strong>{{ searchTerm() }}</strong
-          >"
+          Aucun résultat pour «&nbsp;<strong>{{ searchTerm() }}</strong
+          >&nbsp;»
         </p>
       }
     </div>
@@ -57,7 +57,7 @@
               <h3 class="patient-name">{{ patient.firstName }} {{ patient.nom ?? patient.lastName }}</h3>
               <div class="patient-meta">
                 @if (getAge(patient) !== null) {
-                  <span>{{ getAge(patient) }} years old</span>
+                  <span>{{ getAge(patient) }} ans</span>
                 }
                 @if (getAge(patient) !== null && patient.bloodType) {
                   <span class="meta-dot">•</span>
@@ -84,19 +84,19 @@
               </button>
               <div ngbDropdownMenu class="dropdown-menu-card">
                 <a ngbDropdownItem [routerLink]="['/patient', patient.id, 'history']">
-                  <fa-icon icon="book" class="me-2"></fa-icon> View History
+                  <fa-icon icon="book" class="me-2"></fa-icon> Voir l'historique
                 </a>
                 <a ngbDropdownItem [routerLink]="['/patient', patient.id, 'edit']">
-                  <fa-icon icon="pencil-alt" class="me-2"></fa-icon> Edit
+                  <fa-icon icon="pencil-alt" class="me-2"></fa-icon> Modifier
                 </a>
                 <a ngbDropdownItem [routerLink]="['/appointement/new']">
-                  <fa-icon icon="calendar-alt" class="me-2"></fa-icon> Schedule Appointment
+                  <fa-icon icon="calendar-alt" class="me-2"></fa-icon> Planifier un rendez-vous
                 </a>
                 <a ngbDropdownItem [routerLink]="['/prescription/new']">
-                  <fa-icon icon="pencil-alt" class="me-2"></fa-icon> New Prescription
+                  <fa-icon icon="pencil-alt" class="me-2"></fa-icon> Nouvelle prescription
                 </a>
                 <button ngbDropdownItem class="text-danger" (click)="delete(patient)">
-                  <fa-icon icon="times" class="me-2"></fa-icon> Delete
+                  <fa-icon icon="times" class="me-2"></fa-icon> Supprimer
                 </button>
               </div>
             </div>
@@ -154,7 +154,7 @@
                 <line x1="12" y1="8" x2="12" y2="12" />
                 <line x1="12" y1="16" x2="12.01" y2="16" />
               </svg>
-              <span>Allergies: {{ patient.allergies }}</span>
+              <span>Allergies : {{ patient.allergies }}</span>
             </div>
           }
         </div>

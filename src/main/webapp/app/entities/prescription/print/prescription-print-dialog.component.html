@@ -2,7 +2,7 @@
   <div class="print-dialog">
     <!-- Modal header (not printed) -->
     <div class="modal-head no-print">
-      <h2 class="modal-title">Prescription</h2>
+      <h2 class="modal-title">Ordonnance</h2>
       <div class="modal-head-actions">
         <button type="button" class="btn-print" (click)="print()">
           <svg
@@ -18,9 +18,9 @@
             <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
             <rect x="6" y="14" width="12" height="8"></rect>
           </svg>
-          Print
+          Imprimer
         </button>
-        <button type="button" class="btn-close-modal" (click)="close()" aria-label="Close">
+        <button type="button" class="btn-close-modal" (click)="close()" aria-label="Fermer">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -58,15 +58,15 @@
             </svg>
           </div>
           <div class="clinic-text">
-            <div class="clinic-name">MediCare Clinic</div>
-            <div class="clinic-tag">Healthcare Excellence</div>
+            <div class="clinic-name">Cabinet MediCare</div>
+            <div class="clinic-tag">Soins de santé d'excellence</div>
           </div>
         </div>
         <div class="clinic-date">
           <div class="date-label">Date</div>
           <div class="date-value">
             @if (prescription.prescriptionDate) {
-              {{ prescription.prescriptionDate.format('MMMM D, YYYY') }}
+              {{ prescription.prescriptionDate.format('D MMMM YYYY') }}
             } @else {
               —
             }
@@ -81,10 +81,10 @@
 
       <!-- Patient info -->
       <div class="patient-block">
-        <div class="patient-block-label">Patient Information</div>
+        <div class="patient-block-label">Informations du patient</div>
         <div class="patient-name">{{ patientName() }}</div>
         @if (patientDateOfBirth()) {
-          <div class="patient-dob">Date of Birth: {{ patientDateOfBirth() }}</div>
+          <div class="patient-dob">Date de naissance : {{ patientDateOfBirth() }}</div>
         }
       </div>
 
@@ -104,7 +104,7 @@
             <line x1="12" y1="8" x2="12" y2="12"></line>
             <line x1="12" y1="16" x2="12.01" y2="16"></line>
           </svg>
-          <span>Diagnosis</span>
+          <span>Diagnostic</span>
         </div>
         <div class="diagnosis-text">{{ prescription.diagnosis || '—' }}</div>
       </div>
@@ -116,7 +116,7 @@
             <path d="M10.5 20.5l10-10a4.95 4.95 0 0 0-7-7l-10 10a4.95 4.95 0 0 0 7 7z"></path>
             <line x1="8.5" y1="8.5" x2="15.5" y2="15.5"></line>
           </svg>
-          <span>Medications</span>
+          <span>Médicaments</span>
         </div>
 
         @for (item of prescription.prescriptionItems; track item.id) {
@@ -124,24 +124,24 @@
             <div class="med-name">{{ item.medicationName || '—' }}</div>
             <div class="med-grid">
               <div class="med-cell">
-                <span class="cell-label">Dosage:</span>
+                <span class="cell-label">Dosage :</span>
                 <span class="cell-value">
                   @if (item.medicationDosage != null) {
-                    {{ item.medicationDosage }}mg
+                    {{ item.medicationDosage }} mg
                   } @else {
                     —
                   }
                 </span>
               </div>
               <div class="med-cell">
-                <span class="cell-label">Frequency:</span>
+                <span class="cell-label">Fréquence :</span>
                 <span class="cell-value">{{ frequencyLabel(item) }}</span>
               </div>
               <div class="med-cell">
-                <span class="cell-label">Duration:</span>
+                <span class="cell-label">Durée :</span>
                 <span class="cell-value">
                   @if (item.duration != null) {
-                    {{ item.duration }} days
+                    {{ item.duration }} jours
                   } @else {
                     —
                   }
@@ -150,7 +150,7 @@
             </div>
             @if (item.instructions) {
               <div class="med-instructions">
-                <span class="cell-label">Instructions:</span>
+                <span class="cell-label">Instructions :</span>
                 <span class="cell-value">{{ item.instructions }}</span>
               </div>
             }
@@ -161,7 +161,7 @@
       <!-- Additional notes -->
       @if (prescription.notes) {
         <div class="notes-block">
-          <div class="notes-label">Additional Notes</div>
+          <div class="notes-label">Notes complémentaires</div>
           <div class="notes-text">{{ prescription.notes }}</div>
         </div>
       }
@@ -175,7 +175,7 @@
             <line x1="8" y1="2" x2="8" y2="6"></line>
             <line x1="3" y1="10" x2="21" y2="10"></line>
           </svg>
-          <span><strong>Follow-up appointment:</strong> {{ prescription.followupDate.format('MMMM D, YYYY') }}</span>
+          <span><strong>Rendez-vous de suivi :</strong> {{ prescription.followupDate.format('D MMMM YYYY') }}</span>
         </div>
       }
 
@@ -183,7 +183,7 @@
       <div class="signature-row">
         <div class="signature-block">
           <div class="signature-line"></div>
-          <div class="signature-label">Doctor's Signature</div>
+          <div class="signature-label">Signature du médecin</div>
         </div>
         <div class="signature-block">
           <div class="signature-line"></div>

@@ -19,20 +19,20 @@
       },
       "id": "ID",
       "nom": "Nom",
-      "lastName": "Last Name",
-      "firstName": "First Name",
-      "dateBirth": "Date Birth",
-      "phone": "Phone",
-      "email": "Email",
-      "address": "Address",
-      "bloodType": "Blood Type",
+      "lastName": "Nom",
+      "firstName": "Prénom",
+      "dateBirth": "Date de naissance",
+      "phone": "Téléphone",
+      "email": "E-mail",
+      "address": "Adresse",
+      "bloodType": "Groupe sanguin",
       "allergies": "Allergies",
       "notes": "Notes",
-      "emergencyContactName": "Emergency Contact Name",
-      "emeregencyContactPhone": "Emeregency Contact Phone",
-      "chronicdiseases": "Chronicdiseases",
-      "medicalHistory": "Medical History",
-      "appointement": "Appointement"
+      "emergencyContactName": "Nom du contact d'urgence",
+      "emeregencyContactPhone": "Téléphone du contact d'urgence",
+      "chronicdiseases": "Maladies chroniques",
+      "medicalHistory": "Antécédents médicaux",
+      "appointement": "Rendez-vous"
     }
   }
 }

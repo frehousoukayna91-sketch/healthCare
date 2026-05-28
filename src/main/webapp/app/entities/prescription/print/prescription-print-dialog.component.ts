@@ -82,16 +82,16 @@ export class PrescriptionPrintDialogComponent implements OnInit {
   }
 
   patientDateOfBirth(): string | null {
-    return this.patient?.dateBirth ? this.patient.dateBirth.format('MMMM D, YYYY') : null;
+    return this.patient?.dateBirth ? this.patient.dateBirth.format('D MMMM YYYY') : null;
   }
 
   frequencyLabel(item: IPrescriptionItem): string {
     if (item.frequency == null) return '—';
     const n = item.frequency;
-    if (n === 1) return 'Once daily';
-    if (n === 2) return 'Twice daily';
-    if (n === 3) return 'Three times daily';
-    if (n === 4) return 'Four times daily';
-    return `${n} times daily`;
+    if (n === 1) return '1 fois par jour';
+    if (n === 2) return '2 fois par jour';
+    if (n === 3) return '3 fois par jour';
+    if (n === 4) return '4 fois par jour';
+    return `${n} fois par jour`;
   }
 }

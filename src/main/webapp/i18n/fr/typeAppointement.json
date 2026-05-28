@@ -2,11 +2,11 @@
   "healthCareApp": {
     "typeAppointement": {
       "null": "",
-      "CONSULTATION": "CONSULTATION",
-      "FOLLOW_UP": "FOLLOW_UP",
-      "EMERGENCY": "EMERGENCY",
-      "ROUTINE_CHECKUP": "ROUTINE_CHECKUP",
-      "PROCEDURE": "PROCEDURE"
+      "CONSULTATION": "Consultation",
+      "FOLLOW_UP": "Suivi",
+      "EMERGENCY": "Urgence",
+      "ROUTINE_CHECKUP": "Visite de routine",
+      "PROCEDURE": "Intervention"
     }
   }
 }

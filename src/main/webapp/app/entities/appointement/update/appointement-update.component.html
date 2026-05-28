@@ -4,13 +4,13 @@
     <div class="form-card-header">
       <h2 class="form-title">
         @if (editForm.controls.id.value !== null) {
-          Edit Appointment
+          Modifier le rendez-vous
         } @else {
-          New Appointment
+          Nouveau rendez-vous
         }
       </h2>
       @if (activeModal) {
-        <button type="button" class="modal-close-btn" (click)="previousState()" aria-label="Close">&times;</button>
+        <button type="button" class="modal-close-btn" (click)="previousState()" aria-label="Fermer">&times;</button>
       }
     </div>
 
@@ -27,13 +27,13 @@
           [compareWith]="comparePatient"
           [class.is-invalid]="editForm.controls.patient.invalid && editForm.controls.patient.touched"
         >
-          <option [ngValue]="null">Select patient</option>
+          <option [ngValue]="null">Sélectionner un patient</option>
           @for (patientOption of patientsSharedCollection; track patientOption.id) {
             <option [ngValue]="patientOption">{{ patientLabel(patientOption) }}</option>
           }
         </select>
         @if (editForm.controls.patient.invalid && editForm.controls.patient.touched) {
-          <div class="field-error">Patient is required.</div>
+          <div class="field-error">Le patient est requis.</div>
         }
       </div>
 
@@ -49,25 +49,25 @@
             [class.is-invalid]="editForm.controls.appointementDate.invalid && editForm.controls.appointementDate.touched"
           />
           @if (editForm.controls.appointementDate.invalid && editForm.controls.appointementDate.touched) {
-            <div class="field-error">Date is required.</div>
+            <div class="field-error">La date est requise.</div>
           }
         </div>
 
         <div class="field-group">
-          <label class="field-label" for="field_appointementTime">Time <span class="required-star">*</span></label>
+          <label class="field-label" for="field_appointementTime">Heure <span class="required-star">*</span></label>
           <select
             id="field_appointementTime"
             class="field-input"
             formControlName="appointementTime"
             [class.is-invalid]="editForm.controls.appointementTime.invalid && editForm.controls.appointementTime.touched"
           >
-            <option [ngValue]="null">Select time</option>
+            <option [ngValue]="null">Sélectionner une heure</option>
             @for (slot of timeOptions; track slot) {
               <option [value]="slot">{{ slot }}</option>
             }
           </select>
           @if (editForm.controls.appointementTime.invalid && editForm.controls.appointementTime.touched) {
-            <div class="field-error">Time is required.</div>
+            <div class="field-error">L'heure est requise.</div>
           }
         </div>
       </div>
@@ -75,7 +75,7 @@
       <!-- Duration / Type -->
       <div class="form-grid">
         <div class="field-group">
-          <label class="field-label" for="field_duration">Duration (minutes)</label>
+          <label class="field-label" for="field_duration">Durée (minutes)</label>
           <select id="field_duration" class="field-input" formControlName="duration">
             @for (d of durationOptions; track d) {
               <option [ngValue]="d">{{ d }} minutes</option>
@@ -94,10 +94,10 @@
         </div>
       </div>
 
-      <!-- Status (full row, half width on desktop) -->
+      <!-- Status -->
       <div class="form-grid">
         <div class="field-group">
-          <label class="field-label" for="field_status">Status</label>
+          <label class="field-label" for="field_status">Statut</label>
           <select id="field_status" class="field-input" formControlName="status">
             <option [ngValue]="null">{{ 'healthCareApp.statusAppointement.null' | translate }}</option>
             @for (s of statusAppointementValues; track s) {
@@ -110,13 +110,13 @@
 
       <!-- Reason -->
       <div class="field-group field-group--full">
-        <label class="field-label" for="field_reasonAppointement">Reason for Visit</label>
+        <label class="field-label" for="field_reasonAppointement">Motif de consultation</label>
         <input
           type="text"
           id="field_reasonAppointement"
           class="field-input"
           formControlName="reasonAppointement"
-          placeholder="Reason for the appointment"
+          placeholder="Motif du rendez-vous"
         />
       </div>
 
@@ -128,18 +128,18 @@
           class="field-input field-textarea"
           formControlName="notes"
           rows="3"
-          placeholder="Additional notes"
+          placeholder="Notes complémentaires"
         ></textarea>
       </div>
 
       <!-- Actions -->
       <div class="form-actions">
-        <button type="button" class="btn-cancel" (click)="previousState()">Cancel</button>
+        <button type="button" class="btn-cancel" (click)="previousState()">Annuler</button>
         <button type="submit" class="btn-save" [disabled]="isSaving">
           @if (isSaving) {
-            <fa-icon icon="sync" animation="spin"></fa-icon>&nbsp; Saving…
+            <fa-icon icon="sync" animation="spin"></fa-icon>&nbsp; Enregistrement…
           } @else {
-            <fa-icon icon="save"></fa-icon>&nbsp; Save Appointment
+            <fa-icon icon="save"></fa-icon>&nbsp; Enregistrer le rendez-vous
           }
         </button>
       </div>

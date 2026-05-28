@@ -2,12 +2,12 @@
   "healthCareApp": {
     "statusAppointement": {
       "null": "",
-      "SCHEDULED": "SCHEDULED",
-      "CONFIRMED": "CONFIRMED",
-      "INPROGRESS": "INPROGRESS",
-      "COMPLETED": "COMPLETED",
-      "CANCELED": "CANCELED",
-      "NO_SHOW": "NO_SHOW"
+      "SCHEDULED": "Planifié",
+      "CONFIRMED": "Confirmé",
+      "INPROGRESS": "En cours",
+      "COMPLETED": "Terminé",
+      "CANCELED": "Annulé",
+      "NO_SHOW": "Absent"
     }
   }
 }

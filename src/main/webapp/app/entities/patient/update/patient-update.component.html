@@ -5,57 +5,57 @@
       <div>
         <h2 class="form-title">
           @if (editForm.controls.id.value !== null) {
-            Edit Patient
+            Modifier le patient
           } @else {
-            Add New Patient
+            Nouveau patient
           }
         </h2>
-        <p class="form-subtitle">Fill in the patient's information below</p>
+        <p class="form-subtitle">Remplissez les informations du patient ci-dessous</p>
       </div>
       @if (activeModal) {
-        <button type="button" class="modal-close-btn" (click)="previousState()" aria-label="Close">&times;</button>
+        <button type="button" class="modal-close-btn" (click)="previousState()" aria-label="Fermer">&times;</button>
       }
     </div>
 
     <jhi-alert-error />
 
     <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <!-- Section: Personal Info -->
+      <!-- Section: Informations personnelles -->
       <div class="form-section">
-        <h3 class="section-title">Personal Information</h3>
+        <h3 class="section-title">Informations personnelles</h3>
         <div class="form-grid">
           <div class="field-group">
-            <label class="field-label" for="field_firstName">First Name <span class="required-star">*</span></label>
+            <label class="field-label" for="field_firstName">Prénom <span class="required-star">*</span></label>
             <input
               type="text"
               class="field-input"
               id="field_firstName"
               formControlName="firstName"
-              placeholder="Enter first name"
+              placeholder="Entrez le prénom"
               [class.is-invalid]="editForm.controls.firstName.invalid && editForm.controls.firstName.touched"
             />
             @if (editForm.controls.firstName.invalid && editForm.controls.firstName.touched) {
-              <div class="field-error">First name is required.</div>
+              <div class="field-error">Le prénom est requis.</div>
             }
           </div>
 
           <div class="field-group">
-            <label class="field-label" for="field_nom">Last Name <span class="required-star">*</span></label>
+            <label class="field-label" for="field_nom">Nom <span class="required-star">*</span></label>
             <input
               type="text"
               class="field-input"
               id="field_nom"
               formControlName="nom"
-              placeholder="Enter last name"
+              placeholder="Entrez le nom"
               [class.is-invalid]="editForm.controls.nom.invalid && editForm.controls.nom.touched"
             />
             @if (editForm.controls.nom.invalid && editForm.controls.nom.touched) {
-              <div class="field-error">Last name is required.</div>
+              <div class="field-error">Le nom est requis.</div>
             }
           </div>
 
           <div class="field-group">
-            <label class="field-label" for="field_dateBirth">Date of Birth <span class="required-star">*</span></label>
+            <label class="field-label" for="field_dateBirth">Date de naissance <span class="required-star">*</span></label>
             <div class="input-date-wrapper">
               <input
                 id="field_dateBirth"
@@ -64,7 +64,7 @@
                 formControlName="dateBirth"
                 ngbDatepicker
                 #dateBirthDp="ngbDatepicker"
-                placeholder="YYYY-MM-DD"
+                placeholder="AAAA-MM-JJ"
                 [class.is-invalid]="editForm.controls.dateBirth.invalid && editForm.controls.dateBirth.touched"
               />
               <button type="button" class="date-toggle-btn" (click)="dateBirthDp.toggle()">
@@ -72,76 +72,82 @@
               </button>
             </div>
             @if (editForm.controls.dateBirth.invalid && editForm.controls.dateBirth.touched) {
-              <div class="field-error">Date of birth is required.</div>
+              <div class="field-error">La date de naissance est requise.</div>
             }
           </div>
 
           <div class="field-group">
-            <label class="field-label" for="field_bloodType">Blood Type</label>
-            <input type="text" class="field-input" id="field_bloodType" formControlName="bloodType" placeholder="e.g. A+, O-" />
+            <label class="field-label" for="field_bloodType">Groupe sanguin</label>
+            <input type="text" class="field-input" id="field_bloodType" formControlName="bloodType" placeholder="ex : A+, O-" />
           </div>
         </div>
       </div>
 
-      <!-- Section: Contact -->
+      <!-- Section: Coordonnées -->
       <div class="form-section">
-        <h3 class="section-title">Contact</h3>
+        <h3 class="section-title">Coordonnées</h3>
         <div class="form-grid">
           <div class="field-group">
-            <label class="field-label" for="field_phone">Phone <span class="required-star">*</span></label>
+            <label class="field-label" for="field_phone">Téléphone <span class="required-star">*</span></label>
             <input
               type="text"
               class="field-input"
               id="field_phone"
               formControlName="phone"
-              placeholder="+1 (555) 000-0000"
+              placeholder="+212 6 00 00 00 00"
               [class.is-invalid]="editForm.controls.phone.invalid && editForm.controls.phone.touched"
             />
             @if (editForm.controls.phone.invalid && editForm.controls.phone.touched) {
-              <div class="field-error">Phone is required.</div>
+              <div class="field-error">Le téléphone est requis.</div>
             }
           </div>
 
           <div class="field-group">
-            <label class="field-label" for="field_email">Email</label>
+            <label class="field-label" for="field_email">E-mail</label>
             <input type="email" class="field-input" id="field_email" formControlName="email" placeholder="patient@email.com" />
           </div>
 
           <div class="field-group field-group--full">
-            <label class="field-label" for="field_address">Address</label>
-            <input type="text" class="field-input" id="field_address" formControlName="address" placeholder="Street, City, Country" />
+            <label class="field-label" for="field_address">Adresse</label>
+            <input type="text" class="field-input" id="field_address" formControlName="address" placeholder="Rue, ville, pays" />
           </div>
         </div>
       </div>
 
-      <!-- Section: Medical Info -->
+      <!-- Section: Informations médicales -->
       <div class="form-section">
-        <h3 class="section-title">Medical Information</h3>
+        <h3 class="section-title">Informations médicales</h3>
         <div class="form-grid">
           <div class="field-group field-group--full">
             <label class="field-label" for="field_allergies">Allergies</label>
-            <input type="text" class="field-input" id="field_allergies" formControlName="allergies" placeholder="e.g. Penicillin, Pollen" />
+            <input
+              type="text"
+              class="field-input"
+              id="field_allergies"
+              formControlName="allergies"
+              placeholder="ex : Pénicilline, pollen"
+            />
           </div>
 
           <div class="field-group field-group--full">
-            <label class="field-label" for="field_chronicdiseases">Chronic Diseases</label>
+            <label class="field-label" for="field_chronicdiseases">Maladies chroniques</label>
             <input
               type="text"
               class="field-input"
               id="field_chronicdiseases"
               formControlName="chronicdiseases"
-              placeholder="e.g. Diabetes, Hypertension"
+              placeholder="ex : Diabète, hypertension"
             />
           </div>
 
           <div class="field-group field-group--full">
-            <label class="field-label" for="field_medicalHistory">Medical History</label>
+            <label class="field-label" for="field_medicalHistory">Antécédents médicaux</label>
             <textarea
               class="field-input field-textarea"
               id="field_medicalHistory"
               formControlName="medicalHistory"
               rows="3"
-              placeholder="Relevant medical history..."
+              placeholder="Antécédents médicaux pertinents..."
             ></textarea>
           </div>
 
@@ -152,35 +158,35 @@
               id="field_notes"
               formControlName="notes"
               rows="2"
-              placeholder="Additional notes..."
+              placeholder="Notes complémentaires..."
             ></textarea>
           </div>
         </div>
       </div>
 
-      <!-- Section: Emergency Contact -->
+      <!-- Section: Contact d'urgence -->
       <div class="form-section">
-        <h3 class="section-title">Emergency Contact</h3>
+        <h3 class="section-title">Contact d'urgence</h3>
         <div class="form-grid">
           <div class="field-group">
-            <label class="field-label" for="field_emergencyContactName">Contact Name</label>
+            <label class="field-label" for="field_emergencyContactName">Nom du contact</label>
             <input
               type="text"
               class="field-input"
               id="field_emergencyContactName"
               formControlName="emergencyContactName"
-              placeholder="Full name"
+              placeholder="Nom complet"
             />
           </div>
 
           <div class="field-group">
-            <label class="field-label" for="field_emeregencyContactPhone">Contact Phone</label>
+            <label class="field-label" for="field_emeregencyContactPhone">Téléphone du contact</label>
             <input
               type="text"
               class="field-input"
               id="field_emeregencyContactPhone"
               formControlName="emeregencyContactPhone"
-              placeholder="+1 (555) 000-0000"
+              placeholder="+212 6 00 00 00 00"
             />
           </div>
         </div>
@@ -188,12 +194,12 @@
 
       <!-- Actions -->
       <div class="form-actions">
-        <button type="button" class="btn-cancel" (click)="previousState()"><fa-icon icon="ban"></fa-icon>&nbsp; Cancel</button>
+        <button type="button" class="btn-cancel" (click)="previousState()"><fa-icon icon="ban"></fa-icon>&nbsp; Annuler</button>
         <button type="submit" class="btn-save" [disabled]="isSaving">
           @if (isSaving) {
-            <fa-icon icon="sync" animation="spin"></fa-icon>&nbsp; Saving…
+            <fa-icon icon="sync" animation="spin"></fa-icon>&nbsp; Enregistrement…
           } @else {
-            <fa-icon icon="save"></fa-icon>&nbsp; Save Patient
+            <fa-icon icon="save"></fa-icon>&nbsp; Enregistrer
           }
         </button>
       </div>

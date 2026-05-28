@@ -4,13 +4,13 @@
     <div class="form-card-header">
       <h2 class="form-title">
         @if (editForm.controls.id.value !== null) {
-          Edit Prescription
+          Modifier la prescription
         } @else {
-          New Prescription
+          Nouvelle prescription
         }
       </h2>
       @if (activeModal) {
-        <button type="button" class="modal-close-btn" (click)="previousState()" aria-label="Close">&times;</button>
+        <button type="button" class="modal-close-btn" (click)="previousState()" aria-label="Fermer">&times;</button>
       }
     </div>
 
@@ -26,20 +26,20 @@
           formControlName="patientId"
           [class.is-invalid]="editForm.controls.patientId.invalid && editForm.controls.patientId.touched"
         >
-          <option [ngValue]="null">Select patient</option>
+          <option [ngValue]="null">Sélectionner un patient</option>
           @for (patient of patientsSharedCollection; track patient.id) {
             <option [ngValue]="patient.id">{{ patientLabel(patient) }}</option>
           }
         </select>
         @if (editForm.controls.patientId.invalid && editForm.controls.patientId.touched) {
-          <div class="field-error">Patient is required.</div>
+          <div class="field-error">Le patient est requis.</div>
         }
       </div>
 
       <!-- Dates -->
       <div class="form-grid">
         <div class="field-group">
-          <label class="field-label" for="field_prescriptionDate">Prescription Date <span class="required-star">*</span></label>
+          <label class="field-label" for="field_prescriptionDate">Date de prescription <span class="required-star">*</span></label>
           <input
             type="date"
             id="field_prescriptionDate"
@@ -48,46 +48,46 @@
             [class.is-invalid]="editForm.controls.prescriptionDate.invalid && editForm.controls.prescriptionDate.touched"
           />
           @if (editForm.controls.prescriptionDate.invalid && editForm.controls.prescriptionDate.touched) {
-            <div class="field-error">Prescription date is required.</div>
+            <div class="field-error">La date de prescription est requise.</div>
           }
         </div>
 
         <div class="field-group">
-          <label class="field-label" for="field_followupDate">Follow-up Date</label>
+          <label class="field-label" for="field_followupDate">Date de suivi</label>
           <input type="date" id="field_followupDate" class="field-input" formControlName="followupDate" />
         </div>
       </div>
 
       <!-- Diagnosis -->
       <div class="field-group field-group--full">
-        <label class="field-label" for="field_diagnosis">Diagnosis <span class="required-star">*</span></label>
+        <label class="field-label" for="field_diagnosis">Diagnostic <span class="required-star">*</span></label>
         <textarea
           id="field_diagnosis"
           class="field-input field-textarea"
           formControlName="diagnosis"
           rows="2"
-          placeholder="Enter diagnosis"
+          placeholder="Saisissez le diagnostic"
           [class.is-invalid]="editForm.controls.diagnosis.invalid && editForm.controls.diagnosis.touched"
         ></textarea>
         @if (editForm.controls.diagnosis.invalid && editForm.controls.diagnosis.touched) {
-          <div class="field-error">Diagnosis is required.</div>
+          <div class="field-error">Le diagnostic est requis.</div>
         }
       </div>
 
       <!-- Medications -->
       <div class="meds-section">
         <div class="meds-header">
-          <h3 class="meds-title">Medications</h3>
-          <button type="button" class="btn-add-med" (click)="addMedication()"><span class="btn-icon">+</span> Add Medication</button>
+          <h3 class="meds-title">Médicaments</h3>
+          <button type="button" class="btn-add-med" (click)="addMedication()"><span class="btn-icon">+</span> Ajouter un médicament</button>
         </div>
 
         <div formArrayName="prescriptionItems">
           @for (itemForm of editForm.controls.prescriptionItems.controls; let i = $index; track i) {
             <div class="med-card" [formGroupName]="i">
               <div class="med-card-head">
-                <span class="med-card-title">Medication #{{ i + 1 }}</span>
+                <span class="med-card-title">Médicament n°{{ i + 1 }}</span>
                 @if (editForm.controls.prescriptionItems.length > 1) {
-                  <button type="button" class="med-remove-btn" (click)="removeMedication(i)" title="Remove">
+                  <button type="button" class="med-remove-btn" (click)="removeMedication(i)" title="Supprimer">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -108,66 +108,66 @@
 
               <div class="form-grid">
                 <div class="field-group">
-                  <label class="field-label">Medication Name <span class="required-star">*</span></label>
+                  <label class="field-label">Nom du médicament <span class="required-star">*</span></label>
                   <input
                     type="text"
                     class="field-input"
                     formControlName="medicationName"
-                    placeholder="e.g., Amoxicillin"
+                    placeholder="ex : Amoxicilline"
                     [class.is-invalid]="itemForm.controls.medicationName.invalid && itemForm.controls.medicationName.touched"
                   />
                 </div>
 
                 <div class="field-group">
                   <label class="field-label">Dosage (mg)</label>
-                  <input type="number" class="field-input" formControlName="medicationDosage" placeholder="e.g., 500" min="0" />
+                  <input type="number" class="field-input" formControlName="medicationDosage" placeholder="ex : 500" min="0" />
                 </div>
               </div>
 
               <div class="form-grid">
                 <div class="field-group">
-                  <label class="field-label">Frequency (times/day)</label>
-                  <input type="number" class="field-input" formControlName="frequency" placeholder="e.g., 3" min="0" />
+                  <label class="field-label">Fréquence (fois/jour)</label>
+                  <input type="number" class="field-input" formControlName="frequency" placeholder="ex : 3" min="0" />
                 </div>
 
                 <div class="field-group">
-                  <label class="field-label">Duration (days)</label>
-                  <input type="number" class="field-input" formControlName="duration" placeholder="e.g., 7" min="0" />
+                  <label class="field-label">Durée (jours)</label>
+                  <input type="number" class="field-input" formControlName="duration" placeholder="ex : 7" min="0" />
                 </div>
               </div>
 
               <div class="field-group field-group--full">
-                <label class="field-label">Special Instructions</label>
-                <input type="text" class="field-input" formControlName="instructions" placeholder="e.g., Take with food" />
+                <label class="field-label">Instructions particulières</label>
+                <input type="text" class="field-input" formControlName="instructions" placeholder="ex : À prendre pendant les repas" />
               </div>
             </div>
           }
           @if (editForm.controls.prescriptionItems.length === 0) {
-            <div class="meds-empty">No medications added yet.</div>
+            <div class="meds-empty">Aucun médicament ajouté.</div>
           }
         </div>
       </div>
 
       <!-- Notes -->
       <div class="field-group field-group--full">
-        <label class="field-label" for="field_notes">Additional Notes</label>
+        <label class="field-label" for="field_notes">Notes complémentaires</label>
         <textarea
           id="field_notes"
           class="field-input field-textarea"
           formControlName="notes"
           rows="3"
-          placeholder="Additional instructions for the patient"
+          placeholder="Instructions complémentaires pour le patient"
         ></textarea>
       </div>
 
       <!-- Actions -->
       <div class="form-actions">
-        <button type="button" class="btn-cancel" (click)="previousState()">Cancel</button>
+        <button type="button" class="btn-cancel" (click)="previousState()">Annuler</button>
         <button type="submit" class="btn-save" [disabled]="isSaving">
           @if (isSaving) {
-            <fa-icon icon="sync" animation="spin"></fa-icon>&nbsp; Saving…
+            <fa-icon icon="sync" animation="spin"></fa-icon>&nbsp; Enregistrement…
           } @else {
-            <fa-icon icon="save"></fa-icon>&nbsp; Save Prescription
+            <fa-icon icon="save"></fa-icon>&nbsp; Enregistrer la prescription
           }
         </button>
       </div>

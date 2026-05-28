@@ -4,35 +4,35 @@
       <!-- Header -->
       <div class="form-card-header">
         <div>
-          <h2 class="form-title" data-cy="patientDetailsHeading">Patient Details</h2>
-          <p class="form-subtitle">Read-only view of the patient's information</p>
+          <h2 class="form-title" data-cy="patientDetailsHeading">Détails du patient</h2>
+          <p class="form-subtitle">Consultation en lecture seule</p>
         </div>
       </div>
 
       <jhi-alert-error />
       <jhi-alert />
 
-      <!-- Section: Personal Info -->
+      <!-- Section: Informations personnelles -->
       <div class="form-section">
-        <h3 class="section-title">Personal Information</h3>
+        <h3 class="section-title">Informations personnelles</h3>
         <div class="form-grid">
           <div class="field-group">
-            <label class="field-label">First Name</label>
+            <label class="field-label">Prénom</label>
             <div class="field-value">{{ patientRef.firstName || '—' }}</div>
           </div>
 
           <div class="field-group">
-            <label class="field-label">Last Name</label>
+            <label class="field-label">Nom</label>
             <div class="field-value">{{ patientRef.nom || patientRef.lastName || '—' }}</div>
           </div>
 
           <div class="field-group">
-            <label class="field-label">Date of Birth</label>
+            <label class="field-label">Date de naissance</label>
             <div class="field-value">{{ (patientRef.dateBirth | formatMediumDate) || '—' }}</div>
           </div>
 
           <div class="field-group">
-            <label class="field-label">Blood Type</label>
+            <label class="field-label">Groupe sanguin</label>
             <div class="field-value">{{ patientRef.bloodType || '—' }}</div>
           </div>
         </div>
@@ -40,28 +40,28 @@
 
       <!-- Section: Contact -->
       <div class="form-section">
-        <h3 class="section-title">Contact</h3>
+        <h3 class="section-title">Coordonnées</h3>
         <div class="form-grid">
           <div class="field-group">
-            <label class="field-label">Phone</label>
+            <label class="field-label">Téléphone</label>
             <div class="field-value">{{ patientRef.phone || '—' }}</div>
           </div>
 
           <div class="field-group">
-            <label class="field-label">Email</label>
+            <label class="field-label">E-mail</label>
             <div class="field-value">{{ patientRef.email || '—' }}</div>
           </div>
 
           <div class="field-group field-group--full">
-            <label class="field-label">Address</label>
+            <label class="field-label">Adresse</label>
             <div class="field-value">{{ patientRef.address || '—' }}</div>
           </div>
         </div>
       </div>
 
-      <!-- Section: Medical Info -->
+      <!-- Section: Informations médicales -->
       <div class="form-section">
-        <h3 class="section-title">Medical Information</h3>
+        <h3 class="section-title">Informations médicales</h3>
         <div class="form-grid">
           <div class="field-group field-group--full">
             <label class="field-label">Allergies</label>
@@ -69,12 +69,12 @@
           </div>
 
           <div class="field-group field-group--full">
-            <label class="field-label">Chronic Diseases</label>
+            <label class="field-label">Maladies chroniques</label>
             <div class="field-value">{{ patientRef.chronicdiseases || '—' }}</div>
           </div>
 
           <div class="field-group field-group--full">
-            <label class="field-label">Medical History</label>
+            <label class="field-label">Antécédents médicaux</label>
             <div class="field-value field-value--multiline">{{ patientRef.medicalHistory || '—' }}</div>
           </div>
 
@@ -85,17 +85,17 @@
         </div>
       </div>
 
-      <!-- Section: Emergency Contact -->
+      <!-- Section: Contact d'urgence -->
       <div class="form-section">
-        <h3 class="section-title">Emergency Contact</h3>
+        <h3 class="section-title">Contact d'urgence</h3>
         <div class="form-grid">
           <div class="field-group">
-            <label class="field-label">Contact Name</label>
+            <label class="field-label">Nom du contact</label>
             <div class="field-value">{{ patientRef.emergencyContactName || '—' }}</div>
           </div>
 
           <div class="field-group">
-            <label class="field-label">Contact Phone</label>
+            <label class="field-label">Téléphone du contact</label>
             <div class="field-value">{{ patientRef.emeregencyContactPhone || '—' }}</div>
           </div>
         </div>
@@ -104,10 +104,10 @@
       <!-- Actions -->
       <div class="form-actions">
         <button type="button" class="btn-cancel" (click)="previousState()" data-cy="entityDetailsBackButton">
-          <fa-icon icon="arrow-left"></fa-icon>&nbsp; Back
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp; Retour
         </button>
         <button type="button" class="btn-save" [routerLink]="['/patient', patientRef.id, 'edit']">
-          <fa-icon icon="pencil-alt"></fa-icon>&nbsp; Edit
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp; Modifier
         </button>
       </div>
     </div>

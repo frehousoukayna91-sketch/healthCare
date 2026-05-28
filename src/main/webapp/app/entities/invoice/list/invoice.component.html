@@ -2,10 +2,10 @@
   <!-- Header -->
   <div class="page-header">
     <div>
-      <h1 class="page-title">Invoices</h1>
-      <p class="page-subtitle">Manage billing and payments</p>
+      <h1 class="page-title">Factures</h1>
+      <p class="page-subtitle">Gérez la facturation et les paiements</p>
     </div>
-    <button type="button" class="btn-add" (click)="openNewInvoice()"><span class="btn-icon">+</span> New Invoice</button>
+    <button type="button" class="btn-add" (click)="openNewInvoice()"><span class="btn-icon">+</span> Nouvelle facture</button>
   </div>
 
   <jhi-alert-error />
@@ -14,16 +14,16 @@
   <!-- Summary cards -->
   <div class="summary-cards">
     <div class="summary-card paid">
-      <div class="summary-label">Total Paid</div>
-      <div class="summary-value">{{ totalPaid() | currency: 'USD' : 'symbol' : '1.2-2' }}</div>
+      <div class="summary-label">Total réglé</div>
+      <div class="summary-value">{{ totalPaid() | currency: 'EUR' : 'symbol' : '1.2-2' }}</div>
     </div>
     <div class="summary-card pending">
-      <div class="summary-label">Pending</div>
-      <div class="summary-value">{{ totalPending() | currency: 'USD' : 'symbol' : '1.2-2' }}</div>
+      <div class="summary-label">En attente</div>
+      <div class="summary-value">{{ totalPending() | currency: 'EUR' : 'symbol' : '1.2-2' }}</div>
     </div>
     <div class="summary-card overdue">
-      <div class="summary-label">Overdue</div>
-      <div class="summary-value">{{ totalOverdue() | currency: 'USD' : 'symbol' : '1.2-2' }}</div>
+      <div class="summary-label">En retard</div>
+      <div class="summary-value">{{ totalOverdue() | currency: 'EUR' : 'symbol' : '1.2-2' }}</div>
     </div>
   </div>
 
@@ -47,7 +47,7 @@
       <input
         type="text"
         class="search-input"
-        placeholder="Search invoices..."
+        placeholder="Rechercher une facture..."
         [ngModel]="searchTerm()"
         (ngModelChange)="searchTerm.set($event)"
       />
@@ -64,12 +64,12 @@
     <table class="invoices-table">
       <thead>
         <tr>
-          <th>Invoice #</th>
+          <th>N° Facture</th>
           <th>Patient</th>
           <th>Date</th>
-          <th>Due Date</th>
-          <th class="amount-col">Amount</th>
-          <th>Status</th>
+          <th>Échéance</th>
+          <th class="amount-col">Montant</th>
+          <th>Statut</th>
           <th class="actions-col">Actions</th>
         </tr>
       </thead>
@@ -93,7 +93,7 @@
                   —
                 }
               </td>
-              <td class="amount-col">{{ inv.total ?? 0 | currency: 'USD' : 'symbol' : '1.2-2' }}</td>
+              <td class="amount-col">{{ inv.total ?? 0 | currency: 'EUR' : 'symbol' : '1.2-2' }}</td>
               <td>
                 @if (inv.status) {
                   <span [ngClass]="statusClass(inv.status)">{{ statusLabel(inv.status) }}</span>
@@ -109,7 +109,7 @@
                     </svg>
                   </button>
                   <div ngbDropdownMenu class="dropdown-menu-card">
-                    <button type="button" ngbDropdownItem (click)="openEditInvoice(inv)">Edit</button>
+                    <button type="button" ngbDropdownItem (click)="openEditInvoice(inv)">Modifier</button>
                   </div>
                 </div>
               </td>
@@ -117,12 +117,12 @@
           }
         } @else if (!isLoading) {
           <tr>
-            <td colspan="7" class="empty-row">No invoices found.</td>
+            <td colspan="7" class="empty-row">Aucune facture.</td>
           </tr>
         }
         @if (isLoading && invoices().length === 0) {
           <tr>
-            <td colspan="7" class="empty-row">Loading invoices...</td>
+            <td colspan="7" class="empty-row">Chargement des factures...</td>
           </tr>
         }
       </tbody>

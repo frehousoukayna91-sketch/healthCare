@@ -30,19 +30,19 @@ export class InvoiceUpdateComponent implements OnInit {
   patientsSharedCollection: IPatient[] = [];
 
   readonly statusOptions = [
-    { value: InvoiceStatus.DRAFT, label: 'Draft' },
-    { value: InvoiceStatus.SENT, label: 'Sent' },
-    { value: InvoiceStatus.PAID, label: 'Paid' },
-    { value: InvoiceStatus.OVERDUE, label: 'Overdue' },
-    { value: InvoiceStatus.CANCELLED, label: 'Cancelled' },
+    { value: InvoiceStatus.DRAFT, label: 'Brouillon' },
+    { value: InvoiceStatus.SENT, label: 'Envoyée' },
+    { value: InvoiceStatus.PAID, label: 'Payée' },
+    { value: InvoiceStatus.OVERDUE, label: 'En retard' },
+    { value: InvoiceStatus.CANCELLED, label: 'Annulée' },
   ];
 
   readonly paymentMethodOptions = [
-    { value: PaymentMethod.CASH, label: 'Cash' },
-    { value: PaymentMethod.CARD, label: 'Card' },
-    { value: PaymentMethod.INSURANCE, label: 'Insurance' },
-    { value: PaymentMethod.BANK_TRANSFER, label: 'Bank Transfer' },
-    { value: PaymentMethod.OTHER, label: 'Other' },
+    { value: PaymentMethod.CASH, label: 'Espèces' },
+    { value: PaymentMethod.CARD, label: 'Carte' },
+    { value: PaymentMethod.INSURANCE, label: 'Assurance' },
+    { value: PaymentMethod.BANK_TRANSFER, label: 'Virement' },
+    { value: PaymentMethod.OTHER, label: 'Autre' },
   ];
 
   protected fb = inject(FormBuilder);
