@@ -15,7 +15,7 @@
     </header>
 
     <section class="stat-grid">
-      <a routerLink="/patient" class="stat-card stat-card--blue">
+      <a routerLink="/patient" class="stat-card stat-card--blue" *jhiHasAnyAuthority="['ROLE_MEDECIN', 'ROLE_ADMIN']">
         <div class="stat-card-text">
           <span class="stat-card-label" jhiTranslate="dashboard.stats.totalPatients">Total des patients</span>
           <span class="stat-card-value">{{ totalPatients() }}</span>
@@ -26,7 +26,11 @@
         </div>
       </a>
 
-      <a routerLink="/appointement" class="stat-card stat-card--teal">
+      <a
+        routerLink="/appointement"
+        class="stat-card stat-card--teal"
+        *jhiHasAnyAuthority="['ROLE_MEDECIN', 'ROLE_SECRETAIRE', 'ROLE_ADMIN']"
+      >
         <div class="stat-card-text">
           <span class="stat-card-label" jhiTranslate="dashboard.stats.todayAppointments">Rendez-vous du jour</span>
           <span class="stat-card-value">{{ todayCount() }}</span>
@@ -37,7 +41,7 @@
         </div>
       </a>
 
-      <a routerLink="/invoice" class="stat-card stat-card--orange">
+      <a routerLink="/invoice" class="stat-card stat-card--orange" *jhiHasAnyAuthority="['ROLE_SECRETAIRE', 'ROLE_ADMIN']">
         <div class="stat-card-text">
           <span class="stat-card-label" jhiTranslate="dashboard.stats.pendingInvoices">Factures en attente</span>
           <span class="stat-card-value">{{ pendingCount() }}</span>
@@ -50,7 +54,7 @@
         </div>
       </a>
 
-      <div class="stat-card stat-card--purple">
+      <div class="stat-card stat-card--purple" *jhiHasAnyAuthority="['ROLE_SECRETAIRE', 'ROLE_ADMIN']">
         <div class="stat-card-text">
           <span class="stat-card-label" jhiTranslate="dashboard.stats.monthlyRevenue">Revenus mensuels</span>
           <span class="stat-card-value">{{ monthlyRevenue() | number: '1.2-2' }} €</span>
@@ -63,7 +67,7 @@
     </section>
 
     <section class="dashboard-grid">
-      <div class="panel panel--main">
+      <div class="panel panel--main" *jhiHasAnyAuthority="['ROLE_MEDECIN', 'ROLE_SECRETAIRE', 'ROLE_ADMIN']">
         <div class="panel-header">
           <div>
             <h2 jhiTranslate="dashboard.todayAppointments.title">Rendez-vous du jour</h2>
@@ -105,7 +109,7 @@
             <h2 jhiTranslate="dashboard.quickActions.title">Actions rapides</h2>
           </div>
           <div class="action-list">
-            <a routerLink="/patient" class="action-item">
+            <a routerLink="/patient" class="action-item" *jhiHasAnyAuthority="['ROLE_MEDECIN', 'ROLE_ADMIN']">
               <div class="action-icon action-icon--blue"><i class="pi pi-user-plus"></i></div>
               <div class="action-body">
                 <span class="action-title" jhiTranslate="dashboard.quickActions.newPatient">Nouveau patient</span>
@@ -113,7 +117,7 @@
               </div>
               <i class="pi pi-arrow-up-right action-arrow"></i>
             </a>
-            <a routerLink="/appointement/new" class="action-item">
+            <a routerLink="/appointement/new" class="action-item" *jhiHasAnyAuthority="['ROLE_MEDECIN', 'ROLE_SECRETAIRE', 'ROLE_ADMIN']">
               <div class="action-icon action-icon--teal"><i class="pi pi-calendar-plus"></i></div>
               <div class="action-body">
                 <span class="action-title" jhiTranslate="dashboard.quickActions.scheduleAppointment">Planifier un rendez-vous</span>
@@ -121,7 +125,7 @@
               </div>
               <i class="pi pi-arrow-up-right action-arrow"></i>
             </a>
-            <a routerLink="/prescription/new" class="action-item">
+            <a routerLink="/prescription/new" class="action-item" *jhiHasAnyAuthority="['ROLE_MEDECIN', 'ROLE_ADMIN']">
               <div class="action-icon action-icon--purple"><i class="pi pi-file-edit"></i></div>
               <div class="action-body">
                 <span class="action-title" jhiTranslate="dashboard.quickActions.newPrescription">Nouvelle prescription</span>
@@ -129,7 +133,7 @@
               </div>
               <i class="pi pi-arrow-up-right action-arrow"></i>
             </a>
-            <a routerLink="/invoice" class="action-item">
+            <a routerLink="/invoice" class="action-item" *jhiHasAnyAuthority="['ROLE_SECRETAIRE', 'ROLE_ADMIN']">
               <div class="action-icon action-icon--orange"><i class="pi pi-file"></i></div>
               <div class="action-body">
                 <span class="action-title" jhiTranslate="dashboard.quickActions.createInvoice">Créer une facture</span>
@@ -140,7 +144,7 @@
           </div>
         </div>
 
-        <div class="panel">
+        <div class="panel" *jhiHasAnyAuthority="['ROLE_MEDECIN', 'ROLE_ADMIN']">
           <div class="panel-header">
             <h2 jhiTranslate="dashboard.recentPrescriptions.title">Prescriptions récentes</h2>
             <a routerLink="/prescription" class="panel-link">
